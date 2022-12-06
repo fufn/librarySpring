@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "libraries")
+@Table(name = "library")
 public class Library {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

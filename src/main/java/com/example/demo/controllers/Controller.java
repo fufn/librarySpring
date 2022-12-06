@@ -2,9 +2,8 @@ package com.example.demo.controllers;
 
 import com.example.demo.entities.Book;
 import com.example.demo.entities.Library;
-import com.example.demo.repositories.BookRepo;
-import com.example.demo.repositories.LibraryRepo;
-import org.hibernate.annotations.UpdateTimestamp;
+import com.example.demo.repositories.BookRepository;
+import com.example.demo.repositories.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,35 +13,35 @@ import java.util.List;
 public class Controller {
 
     @Autowired
-    private BookRepo bookRepo;
+    private BookRepository bookRepository;
 
     @Autowired
-    private LibraryRepo libraryRepo;
+    private LibraryRepository libraryRepository;
 
     @GetMapping(value = "/libraries")
     public List<Library> getLibraries(){
-        return libraryRepo.findAll();
+        return libraryRepository.findAll();
     }
 
     @PostMapping(value = "/libraries")
     public Library addLibrary(@RequestParam(value = "name") String name){
         Library library = new Library();
         library.setName(name);
-        return libraryRepo.save(library);
+        return libraryRepository.save(library);
     }
 
     @DeleteMapping(value = "/libraries")
     public void deleteLibrary(@RequestParam(value = "id") Long id){
-        libraryRepo.deleteById(id);
+        libraryRepository.deleteById(id);
     }
 
     @PutMapping(value = "/libraries")
     public Library updateLibrary(@RequestParam(value = "id") Long id,
                                  @RequestParam(value = "newName") String newName){
-        Library library = libraryRepo.findById(id).orElse(null);
+        Library library = libraryRepository.findById(id).orElse(null);
         if (library != null){
             library.setName(newName);
-            libraryRepo.save(library);
+            libraryRepository.save(library);
             return library;
         }
         return library;
@@ -50,7 +49,7 @@ public class Controller {
 
     @GetMapping(value = "/books")
     public List<Book> getAllBooksInLibrary(@RequestParam(value = "library_id") Long id){
-        Library library = libraryRepo.findById(id).orElse(null);
+        Library library = libraryRepository.findById(id).orElse(null);
         if (library != null) {
             return library.getBooks();
         }
@@ -63,7 +62,7 @@ public class Controller {
                         @RequestParam(value = "author") String author,
                         @RequestParam(value = "description") String description,
                         @RequestParam(value = "year") Integer year){
-        Library library = libraryRepo.findById(id).orElse(null);
+        Library library = libraryRepository.findById(id).orElse(null);
         if (library != null){
             Book book = new Book();
             book.setName(name);
@@ -72,8 +71,8 @@ public class Controller {
             book.setYear(year);
             book.setIsBooked(false);
             library.getBooks().add(book);
-            bookRepo.save(book);
-            libraryRepo.save(library);
+            bookRepository.save(book);
+            libraryRepository.save(library);
             return book;
         }
         return null;
@@ -82,9 +81,9 @@ public class Controller {
     @DeleteMapping(value = "/books")
     public void deleteBook(@RequestParam(value = "libraryId") Long libraryId,
                            @RequestParam(value = "bookId") Long bookId){
-        Library library = libraryRepo.findById(libraryId).orElse(null);
+        Library library = libraryRepository.findById(libraryId).orElse(null);
         if (library != null) {
-            Book book = bookRepo.findById(bookId).orElse(null);
+            Book book = bookRepository.findById(bookId).orElse(null);
             if (book != null){
                 for (Book b: library.getBooks()){
                     if (b.getId() == book.getId()) {
@@ -92,8 +91,8 @@ public class Controller {
                         break;
                     }
                 }
-                libraryRepo.save(library);
-                bookRepo.deleteById(bookId);
+                libraryRepository.save(library);
+                bookRepository.deleteById(bookId);
             }
         }
     }
@@ -104,24 +103,24 @@ public class Controller {
                                  @RequestParam(value = "newAuthor") String author,
                                  @RequestParam(value = "newDescription") String description,
                                  @RequestParam(value = "newYear") Integer year){
-        Book book = bookRepo.findById(id).orElse(null);
+        Book book = bookRepository.findById(id).orElse(null);
         if (book != null) {
             book.setName(name);
             book.setAuthor(author);
             book.setDescription(description);
             book.setYear(year);
-            bookRepo.save(book);
+            bookRepository.save(book);
             return book;
         }
         return null;
     }
 
     @PutMapping(value = "/books/reserve")
-    public Book updateLibrary(@RequestParam(value = "id") Long id){
-        Book book = bookRepo.findById(id).orElse(null);
+    public Book reserveBook(@RequestParam(value = "id") Long id){
+        Book book = bookRepository.findById(id).orElse(null);
         if (book != null) {
             book.setIsBooked(!book.getIsBooked());
-            bookRepo.save(book);
+            bookRepository.save(book);
             return book;
         }
         return null;
