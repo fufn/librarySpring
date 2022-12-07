@@ -8,9 +8,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BookMapper {
+    /**
+     * Transfers the entity to DTO version
+     * @param book - initial book object
+     * @param libraryId - ID of the library in which book will be stored
+     * @return the DTO version of created book object
+     */
     public BookDTO toDTO(Book book, Long libraryId){
         return new BookDTO(libraryId, book.getId(), book.getName(), book.getAuthor(), book.getDescription(), book.getYear(), book.getIsBooked());
     }
+
+    /**
+     * Transefrs the DTO to entity version.
+     * @param bookDTO - DTO version of book which transfers to Book object
+     * @return the Book entity vesion.
+     */
     public Book toBook(BookDTO bookDTO){
         return new Book(bookDTO.getId(), bookDTO.getName(), bookDTO.getAuthor(), bookDTO.getDescription(), bookDTO.getYear(), bookDTO.getIsBooked());
     }
