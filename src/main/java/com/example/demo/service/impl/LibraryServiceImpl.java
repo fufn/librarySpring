@@ -1,60 +1,56 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.LibraryDTO;
+import com.example.demo.dto.mapper.LibraryMapper;
 import com.example.demo.entity.Book;
 import com.example.demo.dto.BookDTO;
 import com.example.demo.entity.Library;
 import com.example.demo.repository.LibraryRepository;
 import com.example.demo.service.LibraryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class LibraryServiceImpl implements LibraryService {
 
-    @Autowired
-    private LibraryRepository libraryRepository;
+    private final LibraryRepository libraryRepository;
+    private final LibraryMapper libraryMapper;
 
     @Override
-    public Library getLibrary(Long id) {
-        return libraryRepository.findById(id).orElse(null);
+    public LibraryDTO getLibrary(Long id) {
+        Library library = libraryRepository.findById(id).orElse(null);
+        return libraryMapper.toDTO(library);
     }
 
     @Override
-    public List<Library> getLibraries() {
-        return libraryRepository.findAll();
-    }
-
-    @Override
-    public Library addLibrary(Library library) {
-        return libraryRepository.save(library);
-    }
-
-    @Override
-    public void deleteLibrary(Long id) {
-        libraryRepository.deleteById(id);
-    }
-
-    @Override
-    public Library updateLibrary(Library library) {
-        return libraryRepository.save(library);
-    }
-
-    @Override
-    public List<Book> getBooks(Long id) {
-        return libraryRepository.findById(id).orElse(null).getBooks();
-    }
-
-    @Override
-    public BookDTO addBook(BookDTO book) {
-        if (book != null) {
-            Library library = libraryRepository.findById(book.getLibraryId()).orElse(null);
-            Book newBook = new Book(book.getId(), book.getName(), book.getAuthor(), book.getDescription(), book.getYear(), book.getIsBooked());
-            library.getBooks().add(newBook);
-            libraryRepository.save(library);
-            return book;
+    public List<LibraryDTO> getLibraries() {
+        List<LibraryDTO> libraryDTOS = new ArrayList<>();
+        for (Library l : libraryRepository.findAll()){
+            libraryDTOS.add(libraryMapper.toDTO(l));
         }
-        return null;
+        return libraryDTOS;
     }
+
+    @Override
+    public LibraryDTO addLibrary(LibraryDTO library) {
+        Library newLibrary = libraryRepository.save(libraryMapper.toLibrary(library));
+        return libraryMapper.toDTO(newLibrary);
+    }
+
+    @Override
+    public void deleteLibrary(LibraryDTO libraryDTO) {
+        libraryRepository.deleteById(libraryDTO.getId());
+    }
+
+    @Override
+    public LibraryDTO updateLibrary(LibraryDTO library) {
+        Library newLibrary = libraryRepository.save(libraryMapper.toLibrary(library));
+        return libraryMapper.toDTO(newLibrary);
+    }
+
 }
