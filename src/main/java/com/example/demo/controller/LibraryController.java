@@ -30,7 +30,7 @@ public class LibraryController {
         return libraryService.addLibrary(library);
     }
     /**
-     *@param libraryDTO - DTO containing id number of library that is requested
+     *@param id - DTO containing id number of library that is requested
      *@return return the requested library object from database
      */
     @GetMapping(value = "/libraries/{id}")
