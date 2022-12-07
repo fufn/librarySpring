@@ -1,49 +1,58 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.BookDTO;
+import com.example.demo.dto.BookMapper;
 import com.example.demo.entity.Book;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
+import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-
+@RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
     @Override
-    public Book addBook(Book book) {
-        return bookRepository.save(book);
+    public BookDTO addBook(BookDTO book) {
+        System.out.println(bookMapper.toBook(book));
+        Book newBook = bookRepository.save(bookMapper.toBook(book));
+        bookRepository.addBook(newBook.getId(),book.getLibraryId());
+        return bookMapper.toDTO(newBook, book.getLibraryId());
     }
 
     @Override
-    public void deleteBook(Long bookId) {
+    public void deleteBook(BookDTO book) {
 
-        Book book = bookRepository.findById(bookId).orElse(null);
-        if (book != null) {
+        Long bookId = book.getId();
+        Book bookToDelete = bookRepository.findById(bookId).orElse(null);
+        if (bookToDelete != null) {
             bookRepository.deleteBook(bookId);
             bookRepository.deleteById(bookId);
         }
     }
 
     @Override
-    public Book updateBook(Book book) {
+    public BookDTO updateBook(BookDTO book) {
         if (book != null) {
-            bookRepository.save(book);
-            return book;
+            Book newBook = bookRepository.save(bookMapper.toBook(book));
+            return bookMapper.toDTO(newBook, book.getLibraryId());
         }
         return null;
     }
 
     @Override
-    public Book reserveBook(Long id) {
-        Book book = bookRepository.findById(id).orElse(null);
+    public BookDTO reserveBook(BookDTO book) {
+        Book bookToReserve = bookRepository.findById(book.getId()).orElse(null);
         if (book != null) {
-            book.setIsBooked(!book.getIsBooked());
-            bookRepository.save(book);
-            return book;
+            bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
+            Book newBook = bookRepository.save(bookToReserve);
+            return bookMapper.toDTO(newBook, book.getLibraryId());
         }
         return null;
     }
