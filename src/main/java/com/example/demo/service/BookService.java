@@ -2,6 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Book;
 
+/**
+ * Service responsible for operations on book object.
+ */
 public interface BookService {
 
     //@param takes object of book instance

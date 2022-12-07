@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 
+/**
+ * Book is the entity representing book.
+ * Has id, name, author, description, year and isBooked attributes.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

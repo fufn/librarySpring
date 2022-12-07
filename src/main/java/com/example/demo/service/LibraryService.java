@@ -6,6 +6,9 @@ import com.example.demo.entity.Library;
 
 import java.util.List;
 
+/**
+ * Service responsible for operations on library.
+ */
 public interface LibraryService {
 
     //@param takes the library id number

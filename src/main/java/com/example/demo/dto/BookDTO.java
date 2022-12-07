@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * BookDTO - class representing data transfer object
+ * Used in BookController and BookServiceImpl
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

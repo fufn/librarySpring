@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Library class represents the library object
+ * Has id, name and List of Books stored in library.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +25,6 @@ public class Library {
     @Column
     private String name;
 
-    @ManyToMany (fetch = FetchType.LAZY)
+    @OneToMany (fetch = FetchType.LAZY)
     private List<Book> books;
 }
