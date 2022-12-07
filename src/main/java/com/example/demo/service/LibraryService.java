@@ -1,11 +1,16 @@
 package com.example.demo.service;
 
-import com.example.demo.entities.Book;
-import com.example.demo.entities.Library;
+import com.example.demo.entity.Book;
+import com.example.demo.dto.BookDTO;
+import com.example.demo.entity.Library;
 
 import java.util.List;
 
 public interface LibraryService {
+
+    //@param takes the library id number
+    //@return return the library object from db
+    public Library getLibrary(Long id);
 
     //@return returns list of all libraries
     public List<Library> getLibraries();
@@ -23,7 +28,11 @@ public interface LibraryService {
 
     //@param id - id number of the library which list of books is required
     //@return the list of books in requested library
-    public List<Book> getAllBooksInLibrary(Long id);
+    public List<Book> getBooks(Long id);
+
+    //@param book is the object of book that will be added to the database
+    //@return the added book
+    public BookDTO addBook(BookDTO book);
 
 
 }

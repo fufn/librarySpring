@@ -1,15 +1,15 @@
 package com.example.demo.service;
 
-import com.example.demo.entities.Book;
+import com.example.demo.entity.Book;
 
 public interface BookService {
 
-    //@param book is the object of book that will be added to the database
-    //@return the added book
+    //@param takes object of book instance
+    //@return returns the book which was added to Database
     public Book addBook(Book book);
 
     //@param id - id number of the book that will be deleted
-    public void deleteBook(Long id);
+    public void deleteBook(Long bookId);
 
     //@param book is the object that will be updated in the database
     //@return the updated object
@@ -18,5 +18,9 @@ public interface BookService {
     //@param id is the number of the book that will be reserved
     //@return the updated book object
     public Book reserveBook(Long id);
+
+//    //@param id is the number of the book that is requested
+//    //@return the book object by the given id
+//    public Book getBook(Long id);
 
 }

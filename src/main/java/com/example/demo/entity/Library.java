@@ -1,4 +1,4 @@
-package com.example.demo.entities;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,6 +21,6 @@ public class Library {
     @Column
     private String name;
 
-    @OneToMany (fetch = FetchType.LAZY)
+    @ManyToMany (fetch = FetchType.LAZY)
     private List<Book> books;
 }
