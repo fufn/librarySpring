@@ -9,6 +9,7 @@ import com.example.demo.service.LibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,19 +29,12 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<LibraryDto> getLibraries() {
+    public List<LibraryDto> getLibraries(Pageable pageable) {
         List<LibraryDto> libraryDtos = new ArrayList<>();
-        int count = (int) libraryRepository.count();
-        int counter = 0;
-        int pageSize = 20;
-        int pageNumber = 0;
-        while (counter < count) {
-            Page<Library> libraries = libraryRepository.findAll(PageRequest.of(pageNumber, pageSize));
-            for (Library l : libraries) {
-                libraryDtos.add(libraryMapper.toDto(l));
-            }
-            counter+=pageSize;
-            pageNumber++;
+
+        Page<Library> libraries = libraryRepository.findAll(pageable);
+        for (Library l : libraries) {
+            libraryDtos.add(libraryMapper.toDto(l));
         }
 
         return libraryDtos;
