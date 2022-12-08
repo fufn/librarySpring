@@ -27,7 +27,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public List<LibraryDto> getLibraries() {
         List<LibraryDto> libraryDtos = new ArrayList<>();
-        for (Library l : libraryRepository.findAll()){
+        for (Library l : libraryRepository.findAll()) {
             libraryDtos.add(libraryMapper.toDto(l));
         }
         return libraryDtos;

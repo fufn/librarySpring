@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.Fetch;
 @NoArgsConstructor
 @Entity
 @Table (name = "book")
+@Builder
 public class Book {
 
     @Id
@@ -36,5 +38,9 @@ public class Book {
 
     @Column
     private Boolean isBooked;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "library_id")
+    private Library library;
 
 }

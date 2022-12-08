@@ -18,8 +18,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto addBook(BookDto book) {
         Book newBook = bookRepository.save(bookMapper.toEntity(book));
-        bookRepository.addBook(newBook.getId(),book.getLibraryId());
-        bookMapper.setLibraryId(book.getLibraryId());
         return bookMapper.toDto(newBook);
     }
 
@@ -34,12 +32,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto updateBook(BookDto book) {
-        if (book != null) {
-            Book newBook = bookRepository.save(bookMapper.toEntity(book));
-            bookMapper.setLibraryId(book.getLibraryId());
-            return bookMapper.toDto(newBook);
-        }
-        return null;
+        Book newBook = bookRepository.save(bookMapper.toEntity(book));
+        return bookMapper.toDto(newBook);
     }
 
     @Override
@@ -48,7 +42,6 @@ public class BookServiceImpl implements BookService {
         if (bookToReserve != null) {
             bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
             Book newBook = bookRepository.save(bookToReserve);
-            bookMapper.setLibraryId(null);
             return bookMapper.toDto(newBook);
         }
         return null;

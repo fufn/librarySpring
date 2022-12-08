@@ -1,33 +1,45 @@
 package com.example.demo.dto.mapper.impl;
 
-import com.example.demo.dto.BookDto;
 import com.example.demo.dto.LibraryDto;
 import com.example.demo.dto.mapper.Mapper;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Library;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class LibraryMapper implements Mapper<LibraryDto, Library> {
 
+    private final BookMapper bookMapper;
+
     public Library toEntity(LibraryDto libraryDTO){
-        Library library = new Library();
-        library.setId(libraryDTO.getId());
-        library.setName(libraryDTO.getName());
-        List<Book> books = libraryDTO.getBooks().stream().map(bookDto -> new Book(bookDto.getId(), bookDto.getName(), bookDto.getAuthor(), bookDto.getDescription(), bookDto.getYear(), bookDto.getIsBooked())).toList();
-        library.setBooks(books);
-        return library;
+        List<Book> books = bookMapper.listToEntity(libraryDTO.getBooks());
+
+        return Library.builder()
+                .id(libraryDTO.getId())
+                .name(libraryDTO.getName())
+                .books(books)
+                .build();
+    }
+
+    @Override
+    public List<LibraryDto> listToDto(List<Library> entities) {
+        return entities.stream().map(this::toDto).toList();
+    }
+
+    @Override
+    public List<Library> listToEntity(List<LibraryDto> dtos) {
+        return dtos.stream().map(this::toEntity).toList();
     }
 
     public LibraryDto toDto(Library library){
-        LibraryDto dto = new LibraryDto();
-        dto.setName(library.getName());
-        dto.setId(library.getId());
-        List<BookDto> bookDtos = library.getBooks().stream().map(book -> new BookDto(library.getId(), book)).toList();
-        dto.setBooks(bookDtos);
-        return dto;
+        return LibraryDto.builder()
+                .id(library.getId())
+                .name(library.getName())
+                .books(bookMapper.listToDto(library.getBooks()))
+                .build();
     }
 }
