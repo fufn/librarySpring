@@ -8,9 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-/**
- * BookMapper is class responsible for transefring BookDTO object to Book and vice versa.
- */
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
