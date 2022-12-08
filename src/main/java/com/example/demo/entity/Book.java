@@ -1,16 +1,20 @@
-package com.example.demo.entities;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 
+/**
+ * Book is the entity representing book.
+ * Has id, name, author, description, year and isBooked attributes.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table (name = "books")
+@Table (name = "book")
 public class Book {
 
     @Id
