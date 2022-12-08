@@ -1,11 +1,14 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.BookDto;
 import com.example.demo.dto.LibraryDto;
 import com.example.demo.dto.mapper.impl.LibraryMapper;
 import com.example.demo.entity.Library;
 import com.example.demo.repository.LibraryRepository;
 import com.example.demo.service.LibraryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,14 +30,25 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public List<LibraryDto> getLibraries() {
         List<LibraryDto> libraryDtos = new ArrayList<>();
-        for (Library l : libraryRepository.findAll()) {
-            libraryDtos.add(libraryMapper.toDto(l));
+        int count = (int) libraryRepository.count();
+        int counter = 0;
+        int pageSize = 20;
+        int pageNumber = 0;
+        while (counter < count) {
+            Page<Library> libraries = libraryRepository.findAll(PageRequest.of(pageNumber, pageSize));
+            for (Library l : libraries) {
+                libraryDtos.add(libraryMapper.toDto(l));
+            }
+            counter+=pageSize;
+            pageNumber++;
         }
+
         return libraryDtos;
     }
 
     @Override
     public LibraryDto addLibrary(LibraryDto library) {
+        library.setBooks(new ArrayList<>());
         Library newLibrary = libraryRepository.save(libraryMapper.toEntity(library));
         return libraryMapper.toDto(newLibrary);
     }

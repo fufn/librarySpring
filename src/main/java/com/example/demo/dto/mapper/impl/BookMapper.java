@@ -43,12 +43,18 @@ public class BookMapper implements Mapper<BookDto, Book>{
 
     @Override
     public List<BookDto> listToDto(List<Book> entities) {
-        return entities.stream().map(this::toDto).toList();
+        if (entities != null) {
+            return entities.stream().map(this::toDto).toList();
+        }
+        return null;
     }
 
     @Override
     public List<Book> listToEntity(List<BookDto> dtos) {
-        return dtos.stream().map(this::toEntity).toList();
+        if (dtos != null){
+            return dtos.stream().map(this::toEntity).toList();
+        }
+        return null;
     }
 
 }
