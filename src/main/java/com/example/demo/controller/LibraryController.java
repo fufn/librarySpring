@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.LibraryDto;
 import com.example.demo.service.LibraryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,7 +26,7 @@ public class LibraryController {
      *@return returns the added object with its id number
      */
     @PostMapping(value = "/libraries")
-    public LibraryDto addLibrary(@RequestBody LibraryDto library){
+    public LibraryDto addLibrary(@Valid @RequestBody LibraryDto library){
         return libraryService.addLibrary(library);
     }
     /**
@@ -33,7 +34,7 @@ public class LibraryController {
      *@return return the requested library object from database
      */
     @GetMapping(value = "/libraries/{id}")
-    public LibraryDto getLibrary(@PathVariable(name = "id") Long id){
+    public LibraryDto getLibrary(@Valid @PathVariable(name = "id") Long id){
         return libraryService.getLibrary(id);
     }
 
@@ -41,7 +42,7 @@ public class LibraryController {
      *@return return list of all libraries stored in database
      */
     @GetMapping(value = "/libraries")
-    public List<LibraryDto> getLibraries(@PageableDefault(value = 10, page = 0) Pageable pageable){
+    public List<LibraryDto> getLibraries(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable){
         return libraryService.getLibraries(pageable);
     }
 
@@ -49,7 +50,7 @@ public class LibraryController {
      *@param id - the number of library that is requested to be deleted
      */
     @DeleteMapping(value = "/libraries/{id}")
-    public void deleteLibrary(@PathVariable(name = "id") Long id){
+    public void deleteLibrary(@Valid @PathVariable(name = "id") Long id){
         libraryService.deleteLibrary(id);
     }
 
@@ -58,7 +59,7 @@ public class LibraryController {
      *@return return updated object of library
      */
     @PutMapping(value = "/libraries")
-    public LibraryDto updateLibrary(@RequestBody LibraryDto libraryDTO){
+    public LibraryDto updateLibrary(@Valid @RequestBody LibraryDto libraryDTO){
         return libraryService.updateLibrary(libraryDTO);
     }
 

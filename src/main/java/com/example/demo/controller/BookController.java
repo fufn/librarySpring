@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.BookDto;
 import com.example.demo.service.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +22,15 @@ public class BookController {
      * @return return the added book object with new id number
      */
     @PostMapping(value = "/books")
-    public BookDto addBook(@RequestBody BookDto book){
-        if (book != null) {
-            return bookService.addBook(book);
-        }
-        return null;
+    public BookDto addBook(@Valid @RequestBody BookDto book){
+        return bookService.addBook(book);
     }
 
    /**
     * @param id is the number of book that is requested to be deleted
     */
     @DeleteMapping(value = "/books/{id}")
-    public void deleteBook(@PathVariable(name = "id") Long id){
+    public void deleteBook(@Valid @PathVariable(name = "id") Long id){
         bookService.deleteBook(id);
     }
 
@@ -41,11 +39,8 @@ public class BookController {
      * @param book - object that is needed to be updated in the database
      */
     @PutMapping(value = "/books")
-    public BookDto updateBook(@RequestBody BookDto book){
-        if (book != null) {
-            return bookService.updateBook(book);
-        }
-        return null;
+    public BookDto updateBook(@Valid @RequestBody BookDto book){
+        return bookService.updateBook(book);
     }
 
     /**
@@ -54,7 +49,7 @@ public class BookController {
      * @return the updated book
      */
     @PutMapping(value = "/books/reserve/{id}")
-    public BookDto reserveBook(@PathVariable(name = "id") Long id){
+    public BookDto reserveBook(@Valid @PathVariable(name = "id") Long id){
         return bookService.reserveBook(id);
     }
 }
