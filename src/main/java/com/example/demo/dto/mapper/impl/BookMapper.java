@@ -17,6 +17,7 @@ public class BookMapper implements Mapper<BookDto, Book>{
     private Long libraryId;
 
     public BookDto toDto(Book book){
+//       TODO BookDto.builder().author()
         return new BookDto(libraryId, book.getId(), book.getName(), book.getAuthor(), book.getDescription(), book.getYear(), book.getIsBooked());
     }
 

@@ -8,6 +8,8 @@ import com.example.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
@@ -44,13 +46,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto reserveBook(Long id) {
-        Book bookToReserve = bookRepository.findById(id).orElse(null);
-        if (bookToReserve != null) {
-            bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
-            Book newBook = bookRepository.save(bookToReserve);
-            bookMapper.setLibraryId(null);
-            return bookMapper.toDto(newBook);
-        }
-        return null;
+        Book book = bookRepository.findById(id).orElseThrow(RuntimeException::new);
+        return bookMapper.toDto(book);
     }
 }
