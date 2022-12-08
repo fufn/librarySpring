@@ -1,0 +1,112 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-lesson1.yaml
+  - changeSet:
+      id: 1
+      author: fufn
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+              - column:
+                  name: author
+                  type: varchar(50)
+              - column:
+                  name: description
+                  type: varchar(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: int
+              - column:
+                  name: is_booked
+                  type: boolean
+  - changeSet:
+      id: 2
+      author: fufn
+      changes:
+        - createTable:
+            tableName: library
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+  - changeSet:
+      id: 3
+      author: fufn
+      changes:
+        - createTable:
+            tableName: library_books
+            columns:
+              - column:
+                  name: library_id
+                  type: BIGINT
+              - column:
+                  name: books_id
+                  type: BIGINT
+                  constraints:
+                    unique: true
+  - changeSet:
+      id:  4
+      author: fufn
+      changes:
+        -  addForeignKeyConstraint:
+             baseColumnNames:  books_id
+             baseTableName:  library_books
+             constraintName:  fk_book_id
+             deferrable:  true
+             initiallyDeferred:  true
+             onDelete:  CASCADE
+             onUpdate:  RESTRICT
+             referencedColumnNames:  id
+             referencedTableName:  book
+             validate:  true
+  - changeSet:
+      id: 5
+      author: fufn
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: library_id
+            baseTableName: library_books
+            constraintName: fk_library_id
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: library
+            validate: true
+  - changeSet:
+      id: 6
+      author: fufn
+      comment: "Create Library"
+      changes:
+        - insert:
+            tableName: library
+            columns:
+              - column:
+                  name: name
+                  value: "astana"
+        - insert:
+            tableName: library
+            columns:
+              - column:
+                  name: name
+                  value: "almaty"

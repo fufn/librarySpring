@@ -26,5 +26,5 @@ public class Library {
     private String name;
 
     @OneToMany (fetch = FetchType.LAZY)
-    private List<Book> bookList;
+    private List<Book> books;
 }

@@ -10,9 +10,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LibraryDTO {
+public class LibraryDto {
 
     private Long id;
     private String name;
-    private List<Book> bookList;
+    private List<BookDto> books;
 }

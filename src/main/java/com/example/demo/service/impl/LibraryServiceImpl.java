@@ -1,14 +1,11 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.LibraryDTO;
-import com.example.demo.dto.mapper.LibraryMapper;
-import com.example.demo.entity.Book;
-import com.example.demo.dto.BookDTO;
+import com.example.demo.dto.LibraryDto;
+import com.example.demo.dto.mapper.impl.LibraryMapper;
 import com.example.demo.entity.Library;
 import com.example.demo.repository.LibraryRepository;
 import com.example.demo.service.LibraryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,35 +19,35 @@ public class LibraryServiceImpl implements LibraryService {
     private final LibraryMapper libraryMapper;
 
     @Override
-    public LibraryDTO getLibrary(Long id) {
+    public LibraryDto getLibrary(Long id) {
         Library library = libraryRepository.findById(id).orElse(null);
-        return libraryMapper.toDTO(library);
+        return libraryMapper.toDto(library);
     }
 
     @Override
-    public List<LibraryDTO> getLibraries() {
-        List<LibraryDTO> libraryDTOS = new ArrayList<>();
+    public List<LibraryDto> getLibraries() {
+        List<LibraryDto> libraryDtos = new ArrayList<>();
         for (Library l : libraryRepository.findAll()){
-            libraryDTOS.add(libraryMapper.toDTO(l));
+            libraryDtos.add(libraryMapper.toDto(l));
         }
-        return libraryDTOS;
+        return libraryDtos;
     }
 
     @Override
-    public LibraryDTO addLibrary(LibraryDTO library) {
-        Library newLibrary = libraryRepository.save(libraryMapper.toLibrary(library));
-        return libraryMapper.toDTO(newLibrary);
+    public LibraryDto addLibrary(LibraryDto library) {
+        Library newLibrary = libraryRepository.save(libraryMapper.toEntity(library));
+        return libraryMapper.toDto(newLibrary);
     }
 
     @Override
-    public void deleteLibrary(LibraryDTO libraryDTO) {
-        libraryRepository.deleteById(libraryDTO.getId());
+    public void deleteLibrary(Long id) {
+        libraryRepository.deleteById(id);
     }
 
     @Override
-    public LibraryDTO updateLibrary(LibraryDTO library) {
-        Library newLibrary = libraryRepository.save(libraryMapper.toLibrary(library));
-        return libraryMapper.toDTO(newLibrary);
+    public LibraryDto updateLibrary(LibraryDto library) {
+        Library newLibrary = libraryRepository.save(libraryMapper.toEntity(library));
+        return libraryMapper.toDto(newLibrary);
     }
 
 }

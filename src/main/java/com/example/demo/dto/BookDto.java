@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-import jakarta.persistence.Entity;
+import com.example.demo.entity.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDTO {
+public class BookDto {
 
     private Long libraryId;
     private Long id;
@@ -21,5 +21,15 @@ public class BookDTO {
     private String description;
     private Integer year;
     private Boolean isBooked;
+
+    public BookDto(Long libraryId, Book book){
+        this.libraryId = libraryId;
+        this.id = book.getId();
+        this.author = book.getAuthor();
+        this.name = book.getName();
+        this.description = book.getDescription();
+        this.year = book.getYear();
+        this.isBooked = book.getIsBooked();
+    }
 
 }

@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.LibraryDTO;
-import com.example.demo.entity.Book;
-import com.example.demo.dto.BookDTO;
-import com.example.demo.entity.Library;
+import com.example.demo.dto.LibraryDto;
 
 import java.util.List;
 
@@ -16,27 +13,27 @@ public interface LibraryService {
      * @param id - id of library requested from database
      * @return return the library object from db
      */
-    public LibraryDTO getLibrary(Long id);
+    public LibraryDto getLibrary(Long id);
 
     /**
      *@return returns list of all libraries
      */
-    public List<LibraryDTO> getLibraries();
+    public List<LibraryDto> getLibraries();
 
     /**
      *@param libraryDTO - the object of library that is needed to be saved to database
      *@return the object after successful save
      */
-    public LibraryDTO addLibrary(LibraryDTO libraryDTO);
+    public LibraryDto addLibrary(LibraryDto libraryDTO);
 
     /**
-     *@param libraryDTO - the DTO containing id number of the library that will be deleted
+     *@param id - the id number of the library that will be deleted
      */
-    public void deleteLibrary(LibraryDTO libraryDTO);
+    public void deleteLibrary(Long id);
 
     /**
      *@param libraryDTO - the object of library that will be updated in the database
      *@return the updated object of library
      */
-    public LibraryDTO updateLibrary(LibraryDTO libraryDTO);
+    public LibraryDto updateLibrary(LibraryDto libraryDTO);
 }

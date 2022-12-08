@@ -1,17 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.BookDTO;
-import com.example.demo.dto.LibraryDTO;
-import com.example.demo.entity.Library;
+import com.example.demo.dto.LibraryDto;
 import com.example.demo.service.LibraryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * LiibraryController - represents rest controller.
+ * LibraryController - represents rest controller.
  * Responsible for REST operations on library objects
  */
 @RequiredArgsConstructor
@@ -26,7 +23,7 @@ public class LibraryController {
      *@return returns the added object with its id number
      */
     @PostMapping(value = "/libraries")
-    public LibraryDTO addLibrary(@RequestBody LibraryDTO library){
+    public LibraryDto addLibrary(@RequestBody LibraryDto library){
         return libraryService.addLibrary(library);
     }
     /**
@@ -34,7 +31,7 @@ public class LibraryController {
      *@return return the requested library object from database
      */
     @GetMapping(value = "/libraries/{id}")
-    public LibraryDTO getLibrary(@PathVariable(name = "id") Long id){
+    public LibraryDto getLibrary(@PathVariable(name = "id") Long id){
         return libraryService.getLibrary(id);
     }
 
@@ -42,16 +39,16 @@ public class LibraryController {
      *@return return list of all libraries stored in database
      */
     @GetMapping(value = "/libraries")
-    public List<LibraryDTO> getLibraries(){
+    public List<LibraryDto> getLibraries(){
         return libraryService.getLibraries();
     }
 
     /**
-     *@param library - library that is requested to be deleted
+     *@param id - the number of library that is requested to be deleted
      */
-    @DeleteMapping(value = "/libraries")
-    public void deleteLibrary(@RequestBody LibraryDTO library){
-        libraryService.deleteLibrary(library);
+    @DeleteMapping(value = "/libraries/{id}")
+    public void deleteLibrary(@PathVariable(name = "id") Long id){
+        libraryService.deleteLibrary(id);
     }
 
     /**
@@ -59,7 +56,7 @@ public class LibraryController {
      *@return return updated object of library
      */
     @PutMapping(value = "/libraries")
-    public LibraryDTO updateLibrary(@RequestBody LibraryDTO libraryDTO){
+    public LibraryDto updateLibrary(@RequestBody LibraryDto libraryDTO){
         return libraryService.updateLibrary(libraryDTO);
     }
 

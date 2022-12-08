@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.BookDTO;
+import com.example.demo.dto.BookDto;
 import com.example.demo.service.BookService;
-import com.example.demo.service.impl.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ public class BookController {
      * @return return the added book object with new id number
      */
     @PostMapping(value = "/books")
-    public BookDTO addBook(@RequestBody BookDTO book){
+    public BookDto addBook(@RequestBody BookDto book){
         if (book != null) {
             return bookService.addBook(book);
         }
@@ -30,18 +29,18 @@ public class BookController {
     }
 
    /**
-    * @param book that is requested to be deleted
+    * @param id is the number of book that is requested to be deleted
     */
-    @DeleteMapping(value = "/books")
-    public void deleteBook(@RequestBody BookDTO book){
-        bookService.deleteBook(book);
+    @DeleteMapping(value = "/books/{id}")
+    public void deleteBook(@PathVariable(name = "id") Long id){
+        bookService.deleteBook(id);
     }
     /**
      * @return returns new updated version of book object
      * @param book - object that is needed to be updated in the database
      */
-    @PutMapping(value = "/books/update-book")
-    public BookDTO updateBook(@RequestBody BookDTO book){
+    @PutMapping(value = "/books")
+    public BookDto updateBook(@RequestBody BookDto book){
         if (book != null) {
             return bookService.updateBook(book);
         }
@@ -50,14 +49,11 @@ public class BookController {
 
     /**
      *
-     * @param book - book that will be reserved
+     * @param id - the id number of book that will be reserved
      * @return the updated book
      */
-    @PutMapping(value = "/books/reserve-book/{id}")
-    public BookDTO reserveBook(@RequestBody BookDTO book){
-        return bookService.reserveBook(book);
+    @PutMapping(value = "/books/reserve/{id}")
+    public BookDto reserveBook(@PathVariable(name = "id") Long id){
+        return bookService.reserveBook(id);
     }
-
-
-
 }

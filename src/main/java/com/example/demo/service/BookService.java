@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.BookDTO;
-import com.example.demo.entity.Book;
+import com.example.demo.dto.BookDto;
 
 /**
  * Service responsible for operations on book object.
@@ -12,23 +11,23 @@ public interface BookService {
      * @param bookDTO object of book instance
      * @return returns the book which was added to Database
      */
-    public BookDTO addBook(BookDTO bookDTO);
+    public BookDto addBook(BookDto bookDTO);
 
     /**
-     * @param bookDTO - the book that will be deleted
+     * @param id - the book that will be deleted
      */
-    public void deleteBook(BookDTO bookDTO);
+    public void deleteBook(Long id);
 
     /**
      *@param bookDTO is the object that will be updated in the database
      *@return the updated object
      */
-    public BookDTO updateBook(BookDTO bookDTO);
+    public BookDto updateBook(BookDto bookDTO);
 
     /**
-     *@param bookDTO is the book that will be reserved
+     *@param id is the number of book that will be reserved
      *@return the updated book object
      */
-    public BookDTO reserveBook(BookDTO bookDTO);
+    public BookDto reserveBook(Long id);
 
 }
