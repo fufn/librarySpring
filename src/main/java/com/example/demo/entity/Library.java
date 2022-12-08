@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "library")
+@Builder
 public class Library {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,6 @@ public class Library {
     @Column
     private String name;
 
-    @OneToMany (fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "library", cascade = CascadeType.MERGE)
     private List<Book> books;
 }

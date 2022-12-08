@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.dto.LibraryDto;
 import com.example.demo.service.LibraryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,8 +41,8 @@ public class LibraryController {
      *@return return list of all libraries stored in database
      */
     @GetMapping(value = "/libraries")
-    public List<LibraryDto> getLibraries(){
-        return libraryService.getLibraries();
+    public List<LibraryDto> getLibraries(@PageableDefault(value = 10, page = 0) Pageable pageable){
+        return libraryService.getLibraries(pageable);
     }
 
     /**

@@ -35,6 +35,7 @@ public class BookController {
     public void deleteBook(@PathVariable(name = "id") Long id){
         bookService.deleteBook(id);
     }
+
     /**
      * @return returns new updated version of book object
      * @param book - object that is needed to be updated in the database
