@@ -1,14 +1,13 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.BookDto;
 import com.example.demo.dto.LibraryDto;
 import com.example.demo.dto.mapper.impl.LibraryMapper;
 import com.example.demo.entity.Library;
+import com.example.demo.exception.LibraryNotFoundException;
 import com.example.demo.repository.LibraryRepository;
 import com.example.demo.service.LibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public LibraryDto getLibrary(Long id) {
-        Library library = libraryRepository.findById(id).orElse(null);
+        Library library = libraryRepository.findById(id).orElseThrow(() -> new LibraryNotFoundException("No library with id " + id));
         return libraryMapper.toDto(library);
     }
 
@@ -57,5 +56,4 @@ public class LibraryServiceImpl implements LibraryService {
         Library newLibrary = libraryRepository.save(libraryMapper.toEntity(library));
         return libraryMapper.toDto(newLibrary);
     }
-
 }
