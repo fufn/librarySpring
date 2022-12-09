@@ -48,7 +48,6 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void deleteLibrary(Long id) {
-        Library libraryToDelete = libraryRepository.findById(id).orElseThrow(() -> new LibraryNotFoundException("No library with id " + id));
         libraryRepository.deleteById(id);
     }
 
