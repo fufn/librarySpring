@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.BookDto;
+import com.example.demo.error.ErrorMessage;
+import com.example.demo.exception.BookNotFoundException;
 import com.example.demo.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -51,5 +54,17 @@ public class BookController {
     @PutMapping(value = "/books/reserve/{id}")
     public BookDto reserveBook(@Valid @PathVariable(name = "id") Long id){
         return bookService.reserveBook(id);
+    }
+
+    /**
+     *
+     * @param ex is the exception that was thrown
+     * @return the error message with message, time and HttpStatus
+     */
+    @ExceptionHandler(value = BookNotFoundException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorMessage handleBookNotFoundException(BookNotFoundException ex)
+    {
+        return new ErrorMessage(ex.getLocalizedMessage());
     }
 }

@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.LibraryDto;
+import com.example.demo.error.ErrorMessage;
+import com.example.demo.exception.LibraryNotFoundException;
 import com.example.demo.service.LibraryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,4 +66,15 @@ public class LibraryController {
         return libraryService.updateLibrary(libraryDTO);
     }
 
+    /**
+     *
+     * @param ex is the exception that was thrown
+     * @return the error message with message, time and HttpStatus
+     */
+    @ExceptionHandler(value = LibraryNotFoundException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorMessage handleCustomerAlreadyExistsException(LibraryNotFoundException ex)
+    {
+        return new ErrorMessage(ex.getMessage());
+    }
 }
