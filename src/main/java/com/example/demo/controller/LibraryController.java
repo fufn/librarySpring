@@ -1,15 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.LibraryDto;
-import com.example.demo.error.ErrorMessage;
-import com.example.demo.exception.LibraryNotFoundException;
 import com.example.demo.service.LibraryService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
