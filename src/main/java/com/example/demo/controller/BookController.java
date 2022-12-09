@@ -55,16 +55,4 @@ public class BookController {
     public BookDto reserveBook(@Valid @PathVariable(name = "id") Long id){
         return bookService.reserveBook(id);
     }
-
-    /**
-     *
-     * @param ex is the exception that was thrown
-     * @return the error message with message, time and HttpStatus
-     */
-    @ExceptionHandler(value = BookNotFoundException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorMessage handleBookNotFoundException(BookNotFoundException ex)
-    {
-        return new ErrorMessage(ex.getLocalizedMessage());
-    }
 }

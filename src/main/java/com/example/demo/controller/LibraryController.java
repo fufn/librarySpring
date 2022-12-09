@@ -65,16 +65,4 @@ public class LibraryController {
     public LibraryDto updateLibrary(@Valid @RequestBody LibraryDto libraryDTO){
         return libraryService.updateLibrary(libraryDTO);
     }
-
-    /**
-     *
-     * @param ex is the exception that was thrown
-     * @return the error message with message, time and HttpStatus
-     */
-    @ExceptionHandler(value = LibraryNotFoundException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorMessage handleCustomerAlreadyExistsException(LibraryNotFoundException ex)
-    {
-        return new ErrorMessage(ex.getMessage());
-    }
 }
