@@ -25,9 +25,9 @@ public interface BookService {
     public BookDto updateBook(BookDto bookDTO);
 
     /**
-     *@param id is the number of book that will be reserved
+     *@param bookDto contains the number of book that will be reserved and user email
      *@return the updated book object
      */
-    public BookDto reserveBook(Long id);
+    public BookDto reserveBook(BookDto bookDto);
 
 }

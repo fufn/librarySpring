@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +39,9 @@ public class Book {
     private Boolean isBooked;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "library_id")
     private Library library;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User user;
 
 }

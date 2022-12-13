@@ -33,6 +33,9 @@ databaseChangeLog:
               - column:
                   name: library_id
                   type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
   - changeSet:
       id: 2
       author: fufn
@@ -48,5 +51,22 @@ databaseChangeLog:
             onUpdate: CASCADE
             referencedColumnNames: id
             referencedTableName: library
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: 3
+      author: fufn
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: book
+            baseTableSchemaName: public
+            constraintName: fk_book_user
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: id
+            referencedTableName: users
             referencedTableSchemaName: public
             validate: true

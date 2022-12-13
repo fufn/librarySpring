@@ -4,6 +4,7 @@ import com.example.demo.dto.BookDto;
 import com.example.demo.dto.mapper.Mapper;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Library;
+import com.example.demo.entity.User;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-@Data
 public class BookMapper implements Mapper<BookDto, Book>{
 
     public BookDto toDto(Book book){
@@ -24,9 +24,23 @@ public class BookMapper implements Mapper<BookDto, Book>{
                 .year(book.getYear())
                 .isBooked(book.getIsBooked())
                 .libraryId(book.getLibrary().getId())
+                .userId(book.getUser() == null? null : book.getUser().getId())
                 .build();
     }
 
+    public Book toEntityCreation(BookDto bookDTO){
+        return Book.builder()
+                .id(bookDTO.getId())
+                .name(bookDTO.getName())
+                .author(bookDTO.getAuthor())
+                .description(bookDTO.getDescription())
+                .year(bookDTO.getYear())
+                .isBooked(bookDTO.getIsBooked())
+                .library(Library.builder()
+                        .id(bookDTO.getLibraryId())
+                        .build())
+                .build();
+    }
     public Book toEntity(BookDto bookDTO){
         return Book.builder()
                 .id(bookDTO.getId())
@@ -37,6 +51,9 @@ public class BookMapper implements Mapper<BookDto, Book>{
                 .isBooked(bookDTO.getIsBooked())
                 .library(Library.builder()
                         .id(bookDTO.getLibraryId())
+                        .build())
+                .user(User.builder()
+                        .id(bookDTO.getUserId())
                         .build())
                 .build();
     }

@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.dto.BookDto;
 import com.example.demo.dto.mapper.impl.BookMapper;
 import com.example.demo.entity.Book;
+import com.example.demo.entity.User;
 import com.example.demo.exception.BookNotFoundException;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
@@ -18,7 +19,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto addBook(BookDto book) {
-        Book newBook = bookRepository.save(bookMapper.toEntity(book));
+        Book newBook = bookRepository.save(bookMapper.toEntityCreation(book));
         return bookMapper.toDto(newBook);
     }
 
@@ -34,9 +35,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto reserveBook(Long id) {
-        Book bookToReserve = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("No book with id " + id));
-        bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
+    public BookDto reserveBook(BookDto bookDto) {
+        Book bookToReserve = bookRepository.findById(bookDto.getId()).orElseThrow(() -> new BookNotFoundException("No book with id " + bookDto.getId()));
+        if (!bookToReserve.getIsBooked()){
+            bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
+            bookToReserve.setUser(User.builder().id(bookDto.getUserId()).build());
+        } else if (bookToReserve.getIsBooked() && bookToReserve.getUser() != null && bookToReserve.getUser().getId() == bookDto.getUserId()){
+            bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
+            bookToReserve.setUser(User.builder().id(bookDto.getUserId()).build());
+        }
         return bookMapper.toDto(bookRepository.save(bookToReserve));
     }
 }
