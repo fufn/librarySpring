@@ -9,6 +9,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * User is the entity representing user.
+ * Has id, email, password, full_name, list of books.
+ */
 @Entity
 @Table(name = "users")
 @Data

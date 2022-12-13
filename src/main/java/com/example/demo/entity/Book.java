@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * Book is the entity representing book.
  * Has id, name, author, description, year and isBooked attributes.
+ * Has references to library and users table
  */
 @Data
 @AllArgsConstructor

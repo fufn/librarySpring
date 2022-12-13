@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * LibraryDTO - class representing data transfer object
+ * Used in LibraryController and LibraryServiceImpl
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

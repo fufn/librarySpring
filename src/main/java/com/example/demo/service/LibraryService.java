@@ -17,6 +17,7 @@ public interface LibraryService {
     public LibraryDto getLibrary(Long id);
 
     /**
+     * @param pageable - pageable object that needed to return slice of data
      *@return returns list of all libraries
      */
     public List<LibraryDto> getLibraries(Pageable pageable);
