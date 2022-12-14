@@ -54,7 +54,7 @@ public class LibraryController {
      */
     @Operation(summary = "Get all libraries with pageable")
     @GetMapping(value = "/libraries")
-    @PreAuthorize("hasRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public List<LibraryDto> getLibraries(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)){

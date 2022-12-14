@@ -35,6 +35,9 @@ databaseChangeLog:
               - column:
                   name: password
                   value: "$2a$12$MV1GFXAGnJxLmeqi5Nv7Euvk63UlW.agKitp3TyknM5txBgqz6yKO"
+              - column:
+                  name: full_name
+                  value: "Admin Adminovich"
         - insert:
             tableName: users
             columns:
@@ -44,4 +47,7 @@ databaseChangeLog:
               - column:
                   name: password
                   value: "$2a$12$YdNRme1FbLy5oUGk0k.ZEO3Yc692pBIASUP0uf41nmWnNpVkYB4rK"
+              - column:
+                  name: full_name
+                  value: "User Userovich"
 

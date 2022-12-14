@@ -5,7 +5,6 @@ import com.example.demo.dto.mapper.Mapper;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Library;
 import com.example.demo.entity.User;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

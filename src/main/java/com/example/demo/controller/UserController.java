@@ -6,7 +6,6 @@ import com.example.demo.exception.UserAlreadyExist;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +19,7 @@ import java.util.List;
  * Responsible for REST operations on user objects
  */
 @RestController
-@RequestMapping(name = "/api/v0")
+@RequestMapping("/api/v0")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -66,7 +65,7 @@ public class UserController {
 
     /**
      *
-     * @param userDto - has uodated info about the user
+     * @param userDto - has updated info about the user
      * @return
      */
     @PutMapping(value = "/users")

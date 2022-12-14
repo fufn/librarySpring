@@ -43,7 +43,7 @@ public class User{
     )
     private List<Role> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "user")
     private List<Book> books;
 
 }

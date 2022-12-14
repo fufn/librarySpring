@@ -6,6 +6,7 @@ import com.example.demo.entity.Book;
 import com.example.demo.entity.User;
 import com.example.demo.exception.BookNotFoundException;
 import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final UserRepository userRepository;
 
     @Override
     public BookDto addBook(BookDto book) {
@@ -39,10 +41,9 @@ public class BookServiceImpl implements BookService {
         Book bookToReserve = bookRepository.findById(bookDto.getId()).orElseThrow(() -> new BookNotFoundException("No book with id " + bookDto.getId()));
         if (!bookToReserve.getIsBooked()){
             bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
-            bookToReserve.setUser(User.builder().id(bookDto.getUserId()).build());
-        } else if (bookToReserve.getIsBooked() && bookToReserve.getUser() != null && bookToReserve.getUser().getId() == bookDto.getUserId()){
+            bookToReserve.setUser(userRepository.findById(bookDto.getUserId()).orElseThrow());
+        } else if (bookToReserve.getIsBooked() && bookToReserve.getUser().getId() == bookDto.getUserId()){
             bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
-            bookToReserve.setUser(User.builder().id(bookDto.getUserId()).build());
         }
         return bookMapper.toDto(bookRepository.save(bookToReserve));
     }
