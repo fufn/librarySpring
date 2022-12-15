@@ -1,9 +1,10 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.BookUser;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,9 +20,9 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username);
+        BookUser user = userRepository.findByEmail(username);
         if(user != null){
-            return new org.springframework.security.core.userdetails.User(user.getEmail()
+            return new User(user.getEmail()
                     , user.getPassword(),
                     user.getRoles().stream()
                             .map((role) -> new SimpleGrantedAuthority(role.getName()))

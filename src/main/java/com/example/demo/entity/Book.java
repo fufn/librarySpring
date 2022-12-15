@@ -51,6 +51,6 @@ public class Book {
     private Library library;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    private User user;
+    private BookUser user;
 
 }

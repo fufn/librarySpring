@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.BookDto;
-import com.example.demo.rabbit.RabbitMQSender;
 import com.example.demo.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * BookController - class representing rest controller.
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
 
     private final BookService bookService;
-    private final RabbitMQSender rabbitMQSender;
 
     /**
      * @param book object that will be added to database(without id)
@@ -60,15 +59,12 @@ public class BookController {
     }
 
     /**
-     *
      * @param bookDto - contains the id number of book that will be reserved and user email
-     * @return the information about success reservation of book
      */
     @Operation(summary = "Makes a reservation for book")
     @PutMapping(value = "/books/reserve")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String reserveBook(@Valid @RequestBody BookDto bookDto){
-        rabbitMQSender.sendBookDto(bookDto);
-        return "book successfully reserved";
+    public void reserveBook(@Valid @RequestBody BookDto bookDto){
+        bookService.reserveBook(bookDto);
     }
 }

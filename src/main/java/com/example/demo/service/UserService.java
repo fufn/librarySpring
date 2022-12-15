@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.UserDto;
-import com.example.demo.entity.User;
+import com.example.demo.entity.BookUser;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -22,14 +23,14 @@ public interface UserService {
      * @param email - the email of the user that need to be searched
      * @return the User in database
      */
-    User findByEmail(String email);
+    BookUser findByEmail(String email);
 
     /**
      *
      * @param pageable - pageable object that needed to return slice of data
-     * @return the list of all users.
+     * @return the page of all users.
      */
-    List<UserDto> findAllUsers(Pageable pageable);
+    Page<UserDto> findAllUsers(Pageable pageable);
 
     /**
      * Deletes user with certain id.
@@ -40,7 +41,7 @@ public interface UserService {
     /**
      * Updates the user information.
      * @param userDto - has all updated information about the user.
-     * @return
+     * @return updated UserDto
      */
     UserDto updateUser(UserDto userDto);
 

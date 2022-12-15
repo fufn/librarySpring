@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.LibraryDto;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface LibraryService {
      * @param pageable - pageable object that needed to return slice of data
      *@return returns list of all libraries
      */
-    public List<LibraryDto> getLibraries(Pageable pageable);
+    public Page<LibraryDto> getLibraries(Pageable pageable);
 
     /**
      *@param libraryDTO - the object of library that is needed to be saved to database

@@ -4,7 +4,7 @@ import com.example.demo.dto.BookDto;
 import com.example.demo.dto.mapper.Mapper;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Library;
-import com.example.demo.entity.User;
+import com.example.demo.entity.BookUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +51,7 @@ public class BookMapper implements Mapper<BookDto, Book>{
                 .library(Library.builder()
                         .id(bookDTO.getLibraryId())
                         .build())
-                .user(User.builder()
+                .user(BookUser.builder()
                         .id(bookDTO.getUserId())
                         .build())
                 .build();

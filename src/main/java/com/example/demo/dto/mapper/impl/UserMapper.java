@@ -2,45 +2,44 @@ package com.example.demo.dto.mapper.impl;
 
 import com.example.demo.dto.UserDto;
 import com.example.demo.dto.mapper.Mapper;
-import com.example.demo.entity.User;
+import com.example.demo.entity.BookUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-public class UserMapper implements Mapper<UserDto, User> {
+public class UserMapper implements Mapper<UserDto, BookUser> {
 
     private final PasswordEncoder passwordEncoder;
     @Override
-    public UserDto toDto(User user) {
-        String[] str = user.getFull_name().split(" ");
+    public UserDto toDto(BookUser user) {
         return UserDto.builder()
                 .id(user.getId())
-                .firstName(str[0])
-                .lastName(str[1])
+                .fullName(user.getFullName())
                 .email(user.getEmail())
                 .build();
     }
 
     @Override
-    public User toEntity(UserDto userDto) {
-        return User.builder()
-                .full_name(userDto.getFirstName() + " " + userDto.getLastName())
+    public BookUser toEntity(UserDto userDto) {
+        return BookUser.builder()
+                .fullName(userDto.getFullName())
                 .email(userDto.getEmail())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .build();
     }
 
     @Override
-    public List<UserDto> listToDto(List<User> entities) {
+    public List<UserDto> listToDto(List<BookUser> entities) {
         return null;
     }
 
     @Override
-    public List<User> listToEntity(List<UserDto> dtos) {
+    public List<BookUser> listToEntity(List<UserDto> dtos) {
         return null;
     }
 }

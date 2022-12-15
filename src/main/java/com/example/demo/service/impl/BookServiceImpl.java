@@ -3,7 +3,8 @@ package com.example.demo.service.impl;
 import com.example.demo.dto.BookDto;
 import com.example.demo.dto.mapper.impl.BookMapper;
 import com.example.demo.entity.Book;
-import com.example.demo.exception.BookNotFoundException;
+import com.example.demo.controller.handler.BookNotFoundExceptionHandler;
+import com.example.demo.rabbit.RabbitMQSender;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookService;
@@ -17,6 +18,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final UserRepository userRepository;
+    private final RabbitMQSender rabbitMQSender;
 
     @Override
     public BookDto addBook(BookDto book) {
@@ -37,7 +39,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto reserveBook(BookDto bookDto) {
-        Book bookToReserve = bookRepository.findById(bookDto.getId()).orElseThrow(() -> new BookNotFoundException("No book with id " + bookDto.getId()));
+        Book bookToReserve = bookRepository.findById(bookDto.getId()).orElseThrow(() -> new BookNotFoundExceptionHandler("No book with id " + bookDto.getId()));
         if (!bookToReserve.getIsBooked()){
             bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
             bookToReserve.setUser(userRepository.findById(bookDto.getUserId()).orElseThrow());
@@ -45,5 +47,9 @@ public class BookServiceImpl implements BookService {
             bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
         }
         return bookMapper.toDto(bookRepository.save(bookToReserve));
+    }
+
+    public void reserveBookRabbitMQ(BookDto bookDto){
+        rabbitMQSender.sendBookDto(bookDto);
     }
 }

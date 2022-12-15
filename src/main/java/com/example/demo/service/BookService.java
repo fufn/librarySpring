@@ -30,4 +30,10 @@ public interface BookService {
      */
     public BookDto reserveBook(BookDto bookDto);
 
+    /**
+     * Sends bookDto to RabbitMQSender
+     * @param bookDto - has book id and user id to make a reservation
+     */
+    public void reserveBookRabbitMQ(BookDto bookDto);
+
 }

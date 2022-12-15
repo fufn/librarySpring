@@ -3,16 +3,16 @@ package com.example.demo.service.impl;
 import com.example.demo.dto.LibraryDto;
 import com.example.demo.dto.mapper.impl.LibraryMapper;
 import com.example.demo.entity.Library;
-import com.example.demo.exception.LibraryNotFoundException;
+import com.example.demo.controller.handler.LibraryNotFoundExceptionHandler;
 import com.example.demo.repository.LibraryRepository;
 import com.example.demo.service.LibraryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -23,20 +23,17 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public LibraryDto getLibrary(Long id) {
-        Library library = libraryRepository.findById(id).orElseThrow(() -> new LibraryNotFoundException("No library with id " + id));
+        Library library = libraryRepository.findById(id).orElseThrow(() -> new LibraryNotFoundExceptionHandler("No library with id " + id));
         return libraryMapper.toDto(library);
     }
 
     @Override
-    public List<LibraryDto> getLibraries(Pageable pageable) {
-        List<LibraryDto> libraryDtos = new ArrayList<>();
-
+    public Page<LibraryDto> getLibraries(Pageable pageable) {
         Page<Library> libraries = libraryRepository.findAll(pageable);
-        for (Library l : libraries) {
-            libraryDtos.add(libraryMapper.toDto(l));
-        }
 
-        return libraryDtos;
+        return new PageImpl<>(libraries.stream()
+                .map(libraryMapper::toDto)
+                .toList());
     }
 
     @Override

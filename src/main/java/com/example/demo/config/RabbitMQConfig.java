@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -19,33 +20,29 @@ import org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler
 import org.springframework.amqp.rabbit.support.ListenerExecutionFailedException;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ErrorHandler;
 
 @EnableRabbit
 @Configuration
+@ConfigurationProperties(value = "rabbitmq")
+@Data
 public class RabbitMQConfig {
-    @Value("${rabbitmq.queue}")
+
     private String queueName;
-    @Value("${rabbitmq.exchange}")
+
     private String exchange;
-    @Value("${rabbitmq.routingkey}")
-    private String routingkey;
-    @Value("${rabbitmq.username}")
+
+    private String routingKey;
     private String username;
-    @Value("${rabbitmq.password}")
     private String password;
-    @Value("${rabbitmq.host}")
     private String host;
-    @Value("${rabbitmq.virtualhost}")
     private String virtualHost;
-    @Value("${rabbitmq.reply.timeout}")
     private Integer replyTimeout;
-    @Value("${rabbitmq.concurrent.consumers}")
     private Integer concurrentConsumers;
-    @Value("${rabbitmq.max.concurrent.consumers}")
     private Integer maxConcurrentConsumers;
     @Bean
     public Queue queue() {
@@ -57,7 +54,7 @@ public class RabbitMQConfig {
     }
     @Bean
     public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
     @Bean
     public MessageConverter jsonMessageConverter() {
@@ -115,3 +112,5 @@ public class RabbitMQConfig {
         }
     }
 }
+
+

@@ -4,6 +4,7 @@ import com.example.demo.dto.LibraryDto;
 import com.example.demo.service.LibraryService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,13 +61,7 @@ public class LibraryController {
     @Operation(summary = "Get all libraries with pageable")
     @GetMapping(value = "/libraries")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public List<LibraryDto> getLibraries(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)){
-            System.out.println(authentication.getPrincipal());
-        } else {
-            return null;
-        }
+    public Page<LibraryDto> getLibraries(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable){
         return libraryService.getLibraries(pageable);
     }
 
