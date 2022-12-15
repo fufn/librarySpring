@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import com.example.demo.dto.BookDto;
 import com.example.demo.dto.mapper.impl.BookMapper;
 import com.example.demo.entity.Book;
-import com.example.demo.entity.User;
 import com.example.demo.exception.BookNotFoundException;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.UserRepository;
