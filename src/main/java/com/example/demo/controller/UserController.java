@@ -4,6 +4,8 @@ import com.example.demo.dto.UserDto;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -29,7 +31,7 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-
+    private final Logger logger = LogManager.getLogger(UserController.class.toString());
 
     /**
      * @param userDto - has all information needed to register the user
@@ -38,6 +40,7 @@ public class UserController {
     @Operation(summary = "Registers users")
     @PostMapping(value = "/users")
     public UserDto registration(@Valid @RequestBody UserDto userDto) {
+        logger.info("PostMapping request - registration method. " + userDto);
         return userService.saveUser(userDto);
     }
 
@@ -47,7 +50,8 @@ public class UserController {
      */
     @GetMapping(value = "/users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Page<UserDto> users(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable) {
+    public Page<UserDto> getUsers(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable) {
+        logger.info("GetMapping request - getUsers method. " + pageable);
         return userService.findAllUsers(pageable);
     }
 
@@ -56,7 +60,8 @@ public class UserController {
      */
     @DeleteMapping(value = "/users/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public void users(@Valid @PathVariable(name = "id") Long id) {
+    public void deleteUser(@Valid @PathVariable(name = "id") Long id) {
+        logger.info("DeleteMapping request - deleteUser method. Delete id = " + id);
         userService.deleteById(id);
     }
 
@@ -67,6 +72,7 @@ public class UserController {
     @PutMapping(value = "/users")
     @PreAuthorize("hasRole('ROLE_USER')")
     public UserDto updateUser(@Valid @RequestBody UserDto userDto) {
+        logger.info("PutMapping request - updateUser method. " + userDto);
         return userService.updateUser(userDto);
     }
 

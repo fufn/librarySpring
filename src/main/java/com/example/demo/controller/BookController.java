@@ -4,6 +4,8 @@ import com.example.demo.dto.BookDto;
 import com.example.demo.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ import javax.validation.Valid;
 public class BookController {
 
     private final BookService bookService;
+    private final Logger logger = LogManager.getLogger(BookController.class.toString());
 
     /**
      * @param book object that will be added to database(without id)
@@ -34,6 +37,7 @@ public class BookController {
     @PostMapping(value = "/books")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookDto addBook(@Valid @RequestBody BookDto book){
+        logger.info("PostMapping request - addBook method. " + book);
         return bookService.addBook(book);
     }
 
@@ -44,6 +48,7 @@ public class BookController {
     @DeleteMapping(value = "/books/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteBook(@Valid @PathVariable(name = "id") Long id){
+        logger.info("DeleteMapping request - deleteBook method. Delete id = " + id);
         bookService.deleteBook(id);
     }
 
@@ -55,6 +60,7 @@ public class BookController {
     @PutMapping(value = "/books")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookDto updateBook(@Valid @RequestBody BookDto book){
+        logger.info("PutMapping request - updateBook method. " + book);
         return bookService.updateBook(book);
     }
 
@@ -65,6 +71,7 @@ public class BookController {
     @PutMapping(value = "/books/reserve")
     @PreAuthorize("hasRole('ROLE_USER')")
     public void reserveBook(@Valid @RequestBody BookDto bookDto){
+        logger.info("PutMapping request - reserveBook method. " + bookDto);
         bookService.reserveBook(bookDto);
     }
 }

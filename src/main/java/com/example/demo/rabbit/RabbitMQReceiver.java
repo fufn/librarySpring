@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class RabbitMQReceiver {
 
     private final BookService bookService;
-    private static Logger logger = LogManager.getLogger(RabbitMQReceiver.class.toString());
+    private final Logger logger = LogManager.getLogger(RabbitMQReceiver.class.toString());
     @RabbitHandler
     public void toReserve(BookDto bookDto) {
         bookService.reserveBook(bookDto);
