@@ -27,7 +27,7 @@ import javax.validation.Valid;
 public class BookController {
 
     private final BookService bookService;
-    private final Logger logger = LogManager.getLogger(BookController.class.toString());
+    private final Logger logger = LogManager.getLogger(getClass());
 
     /**
      * @param book object that will be added to database(without id)
@@ -37,7 +37,7 @@ public class BookController {
     @PostMapping(value = "/books")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookDto addBook(@Valid @RequestBody BookDto book){
-        logger.info("PostMapping request - addBook method. " + book);
+        logger.info("POST request to add book = {} ", book);
         return bookService.addBook(book);
     }
 
@@ -48,7 +48,7 @@ public class BookController {
     @DeleteMapping(value = "/books/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteBook(@Valid @PathVariable(name = "id") Long id){
-        logger.info("DeleteMapping request - deleteBook method. Delete id = " + id);
+        logger.info("DELETE request to delete book id = {}", id);
         bookService.deleteBook(id);
     }
 
@@ -60,7 +60,7 @@ public class BookController {
     @PutMapping(value = "/books")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookDto updateBook(@Valid @RequestBody BookDto book){
-        logger.info("PutMapping request - updateBook method. " + book);
+        logger.info("PUT request to update book = {}", book);
         return bookService.updateBook(book);
     }
 
@@ -71,7 +71,7 @@ public class BookController {
     @PutMapping(value = "/books/reserve")
     @PreAuthorize("hasRole('ROLE_USER')")
     public void reserveBook(@Valid @RequestBody BookDto bookDto){
-        logger.info("PutMapping request - reserveBook method. " + bookDto);
+        logger.info("PUT request to reserve book = {}", bookDto);
         bookService.reserveBook(bookDto);
     }
 }

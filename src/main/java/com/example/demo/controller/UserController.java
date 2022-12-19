@@ -31,7 +31,7 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    private final Logger logger = LogManager.getLogger(UserController.class.toString());
+    private final Logger logger = LogManager.getLogger(getClass());
 
     /**
      * @param userDto - has all information needed to register the user
@@ -40,7 +40,7 @@ public class UserController {
     @Operation(summary = "Registers users")
     @PostMapping(value = "/users")
     public UserDto registration(@Valid @RequestBody UserDto userDto) {
-        logger.info("PostMapping request - registration method. " + userDto);
+        logger.info("POST request to register user = {}", userDto);
         return userService.saveUser(userDto);
     }
 
@@ -51,7 +51,7 @@ public class UserController {
     @GetMapping(value = "/users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Page<UserDto> getUsers(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable) {
-        logger.info("GetMapping request - getUsers method. " + pageable);
+        logger.info("GET request to get users. {}", pageable);
         return userService.findAllUsers(pageable);
     }
 
@@ -61,18 +61,18 @@ public class UserController {
     @DeleteMapping(value = "/users/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public void deleteUser(@Valid @PathVariable(name = "id") Long id) {
-        logger.info("DeleteMapping request - deleteUser method. Delete id = " + id);
+        logger.info("DELETE request to delete user id = {}", id);
         userService.deleteById(id);
     }
 
     /**
      * @param userDto - has updated info about the user
-     * @return
+     * @return updated info about the user
      */
     @PutMapping(value = "/users")
     @PreAuthorize("hasRole('ROLE_USER')")
     public UserDto updateUser(@Valid @RequestBody UserDto userDto) {
-        logger.info("PutMapping request - updateUser method. " + userDto);
+        logger.info("PUT request to update user = {}", userDto);
         return userService.updateUser(userDto);
     }
 

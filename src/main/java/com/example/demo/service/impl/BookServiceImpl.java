@@ -21,7 +21,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final UserRepository userRepository;
     private final RabbitMQSender rabbitMQSender;
-    private final Logger logger = LogManager.getLogger(BookService.class.toString());
+    private final Logger logger = LogManager.getLogger(getClass());
 
     @Override
     public BookDto addBook(BookDto book) {

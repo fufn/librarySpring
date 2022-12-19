@@ -22,7 +22,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     private final LibraryRepository libraryRepository;
     private final LibraryMapper libraryMapper;
-    private final Logger logger = LogManager.getLogger(LibraryServiceImpl.class.toString());
+    private final Logger logger = LogManager.getLogger(getClass());
 
     @Override
     public LibraryDto getLibrary(Long id) {

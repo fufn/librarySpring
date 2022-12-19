@@ -31,7 +31,7 @@ import javax.validation.Valid;
 public class LibraryController {
 
     private final LibraryService libraryService;
-    private final Logger logger = LogManager.getLogger(LibraryController.class.toString());
+    private final Logger logger = LogManager.getLogger(getClass());
 
     /**
      *@param library obejct that will be added to database (without id)
@@ -41,7 +41,7 @@ public class LibraryController {
     @PostMapping(value = "/libraries")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public LibraryDto addLibrary(@Valid @RequestBody LibraryDto library){
-        logger.info("PostMapping request - addLibrary method. " + library);
+        logger.info("POST request to add library = {} ", library);
         return libraryService.addLibrary(library);
     }
     /**
@@ -52,7 +52,7 @@ public class LibraryController {
     @GetMapping(value = "/libraries/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public LibraryDto getLibrary(@Valid @PathVariable(name = "id") Long id){
-        logger.info("GetMapping request - getLibrary method. Get id = " + id);
+        logger.info("GET request to get library id = {}", id);
         return libraryService.getLibrary(id);
     }
 
@@ -63,7 +63,7 @@ public class LibraryController {
     @GetMapping(value = "/libraries")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public Page<LibraryDto> getLibraries(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable){
-        logger.info("GetMapping request - getLibraries method." + pageable);
+        logger.info("GET request to get libraries. {}", pageable);
         return libraryService.getLibraries(pageable);
     }
 
@@ -74,7 +74,7 @@ public class LibraryController {
     @DeleteMapping(value = "/libraries/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteLibrary(@Valid @PathVariable(name = "id") Long id){
-        logger.info("DeleteMapping request - deleteLibrary method. Delete id =" + id);
+        logger.info("DELETE request to delete library id = {}",id);
         libraryService.deleteLibrary(id);
     }
 
@@ -86,7 +86,7 @@ public class LibraryController {
     @PutMapping(value = "/libraries")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public LibraryDto updateLibrary(@Valid @RequestBody LibraryDto libraryDTO){
-        logger.info("PutMapping request - updateLibrary method. " + libraryDTO);
+        logger.info("PUT request to update library = {}", libraryDTO);
         return libraryService.updateLibrary(libraryDTO);
     }
 }

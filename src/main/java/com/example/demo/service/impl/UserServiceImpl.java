@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final String userAlreadyExist = "There is alreade an account with the same email.";
-    private final Logger logger = LogManager.getLogger(UserServiceImpl.class.toString());
+    private final Logger logger = LogManager.getLogger(getClass());
     @Override
     public UserDto saveUser(UserDto userDto) {
         logger.debug("Trying to save a user. " + userDto);
