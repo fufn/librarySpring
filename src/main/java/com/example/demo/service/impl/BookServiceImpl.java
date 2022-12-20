@@ -74,10 +74,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> getByFilters(BookDto bookDto) {
+        logger.debug("Trying to get books by filters");
         List<Book> books = bookRepository.getByFilters(bookDto.getName(), bookDto.getAuthor(), bookDto.getYear(), bookDto.getIsBooked());
         if (books == null) {
             throw new BookNotFoundExceptionHandler("There is no books with required filters");
         }
+        logger.debug("Found books.");
         return bookMapper.listToDto(books);
     }
 }
