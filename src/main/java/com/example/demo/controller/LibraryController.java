@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.LibraryDto;
 import com.example.demo.service.LibraryService;
 import io.swagger.v3.oas.annotations.Operation;
+import liquibase.pro.packaged.V;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * LibraryController - represents rest controller.
@@ -90,4 +92,13 @@ public class LibraryController {
         logger.info("PUT request to update library = {}", libraryDTO);
         return libraryService.updateLibrary(libraryDTO);
     }
+
+    @Operation(summary = "Get libraries by filter")
+    @GetMapping(value = "/libraries/filter")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    public List<LibraryDto> getByFilet(@Valid @RequestBody LibraryDto libraryDto){
+        logger.info("GET request to get libraries with filter = {}", libraryDto);
+        return libraryService.getByFilters(libraryDto);
+    }
+
 }

@@ -4,6 +4,7 @@ import com.example.demo.dto.LibraryDto;
 import com.example.demo.dto.mapper.impl.LibraryMapper;
 import com.example.demo.entity.Library;
 import com.example.demo.controller.handler.LibraryNotFoundExceptionHandler;
+import com.example.demo.repository.CustomLibraryRepository;
 import com.example.demo.repository.LibraryRepository;
 import com.example.demo.service.LibraryService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,6 +24,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     private final LibraryRepository libraryRepository;
     private final LibraryMapper libraryMapper;
+    private final CustomLibraryRepository customLibraryRepository;
     private final Logger logger = LogManager.getLogger(getClass());
 
     @Override
@@ -65,4 +68,12 @@ public class LibraryServiceImpl implements LibraryService {
         logger.debug("Library was updated successfully");
         return libraryMapper.toDto(newLibrary);
     }
+
+    @Override
+    public List<LibraryDto> getByFilters(LibraryDto libraryDto) {
+        List<Library> libraries = customLibraryRepository.findByFilters(libraryDto.getName(), libraryDto.getCity());
+        return libraryMapper.listToDto(libraries);
+    }
+
+
 }

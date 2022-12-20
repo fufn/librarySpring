@@ -16,6 +16,9 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(50)
+              - column:
+                  name: city
+                  type: varchar(50)
   - changeSet:
       id: 2
       author: fufn
@@ -26,10 +29,16 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
+                  value: "Marwin"
+              - column:
+                  name: city
                   value: "astana"
         - insert:
             tableName: library
             columns:
               - column:
                   name: name
+                  value: "National"
+              - column:
+                  name: city
                   value: "almaty"

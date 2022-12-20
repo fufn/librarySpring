@@ -34,6 +34,9 @@ public class Library {
     @Column
     private String name;
 
+    @Column
+    private String city;
+
     @OneToMany(mappedBy = "library", cascade = CascadeType.MERGE)
     private List<Book> books;
 }
