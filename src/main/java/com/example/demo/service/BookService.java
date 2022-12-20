@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.dto.BookDto;
 
+import java.util.List;
+
 /**
  * Service responsible for operations on book object.
  */
@@ -36,4 +38,10 @@ public interface BookService {
      */
     public void reserveBookRabbitMQ(BookDto bookDto);
 
+    /**
+     * Find all books by author name
+     * @param bookDto - required parameters to search books
+     * @return list of BookDtos
+     */
+    public List<BookDto> getByFilters(BookDto bookDto);
 }

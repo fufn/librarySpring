@@ -13,6 +13,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
@@ -64,8 +66,18 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void reserveBookRabbitMQ(BookDto bookDto) {
+        Book book = bookRepository.findById(bookDto.getId()).orElseThrow(() -> new BookNotFoundExceptionHandler("There is no such book to reserve"));
         logger.debug("Sending bookDto to RabbitMQ queue. " + bookDto);
         rabbitMQSender.sendBookDto(bookDto);
         logger.debug("BookDto was sent.");
+    }
+
+    @Override
+    public List<BookDto> getByFilters(BookDto bookDto) {
+        List<Book> books = bookRepository.getByFilters(bookDto.getName(), bookDto.getAuthor(), bookDto.getYear(), bookDto.getIsBooked());
+        if (books == null) {
+            throw new BookNotFoundExceptionHandler("There is no books with required filters");
+        }
+        return bookMapper.listToDto(books);
     }
 }

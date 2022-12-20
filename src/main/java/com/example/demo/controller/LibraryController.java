@@ -34,58 +34,59 @@ public class LibraryController {
     private final Logger logger = LogManager.getLogger(getClass());
 
     /**
-     *@param library obejct that will be added to database (without id)
-     *@return returns the added object with its id number
+     * @param library obejct that will be added to database (without id)
+     * @return returns the added object with its id number
      */
     @Operation(summary = "Add library to database")
     @PostMapping(value = "/libraries")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public LibraryDto addLibrary(@Valid @RequestBody LibraryDto library){
+    public LibraryDto addLibrary(@Valid @RequestBody LibraryDto library) {
         logger.info("POST request to add library = {} ", library);
         return libraryService.addLibrary(library);
     }
+
     /**
-     *@param id - DTO containing id number of library that is requested
-     *@return return the requested library object from database
+     * @param id - DTO containing id number of library that is requested
+     * @return return the requested library object from database
      */
     @Operation(summary = "Get a library by id")
     @GetMapping(value = "/libraries/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    public LibraryDto getLibrary(@Valid @PathVariable(name = "id") Long id){
+    public LibraryDto getLibrary(@Valid @PathVariable(name = "id") Long id) {
         logger.info("GET request to get library id = {}", id);
         return libraryService.getLibrary(id);
     }
 
     /**
-     *@return return list of all libraries stored in database
+     * @return return list of all libraries stored in database
      */
     @Operation(summary = "Get all libraries with pageable")
     @GetMapping(value = "/libraries")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public Page<LibraryDto> getLibraries(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable){
+    public Page<LibraryDto> getLibraries(@Valid @PageableDefault(value = 10, page = 0) Pageable pageable) {
         logger.info("GET request to get libraries. {}", pageable);
         return libraryService.getLibraries(pageable);
     }
 
     /**
-     *@param id - the number of library that is requested to be deleted
+     * @param id - the number of library that is requested to be deleted
      */
     @Operation(summary = "Get a library with id")
     @DeleteMapping(value = "/libraries/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteLibrary(@Valid @PathVariable(name = "id") Long id){
-        logger.info("DELETE request to delete library id = {}",id);
+    public void deleteLibrary(@Valid @PathVariable(name = "id") Long id) {
+        logger.info("DELETE request to delete library id = {}", id);
         libraryService.deleteLibrary(id);
     }
 
     /**
-     *@param libraryDTO object that will be updated in database
-     *@return return updated object of library
+     * @param libraryDTO object that will be updated in database
+     * @return return updated object of library
      */
     @Operation(summary = "Updates a library")
     @PutMapping(value = "/libraries")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public LibraryDto updateLibrary(@Valid @RequestBody LibraryDto libraryDTO){
+    public LibraryDto updateLibrary(@Valid @RequestBody LibraryDto libraryDTO) {
         logger.info("PUT request to update library = {}", libraryDTO);
         return libraryService.updateLibrary(libraryDTO);
     }
