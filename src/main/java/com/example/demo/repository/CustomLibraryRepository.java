@@ -8,13 +8,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static org.springframework.data.jpa.domain.Specification.where;
+
 @Component
 @RequiredArgsConstructor
 public class CustomLibraryRepository {
     private final LibraryRepository libraryRepository;
 
     public List<Library> findByFilters(String name, String city){
-        return libraryRepository.findAll(Specification.where(nameLike(name)).and(cityLike(city)));
+        return libraryRepository.findAll(where(nameLike(name)).and(cityLike(city)));
     }
 
     public Specification<Library> cityLike(String city){

@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
-    private final String userAlreadyExist = "There is alreade an account with the same email.";
+    private final static String USER_ALREADY_EXIST = "There is already an account with the same email.";
     private final Logger logger = LogManager.getLogger(getClass());
     @Override
     public UserDto saveUser(UserDto userDto) {
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
         if(existingUser != null){
             logger.debug("Such user already exists. " + userDto);
-            throw new UserAlreadyExistHandler(userAlreadyExist);
+            throw new UserAlreadyExistHandler(USER_ALREADY_EXIST);
         }
 
         BookUser user = userMapper.toEntity(userDto);
