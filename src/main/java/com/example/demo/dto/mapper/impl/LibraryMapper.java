@@ -21,6 +21,7 @@ public class LibraryMapper implements Mapper<LibraryDto, Library> {
         return Library.builder()
                 .id(libraryDTO.getId())
                 .name(libraryDTO.getName())
+                .city(libraryDTO.getCity())
                 .books(books)
                 .build();
     }
@@ -40,6 +41,7 @@ public class LibraryMapper implements Mapper<LibraryDto, Library> {
                 .id(library.getId())
                 .name(library.getName())
                 .books(bookMapper.listToDto(library.getBooks()))
+                .city(library.getCity())
                 .build();
     }
 }

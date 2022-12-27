@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.dto.BookDto;
 
+import java.util.List;
+
 /**
  * Service responsible for operations on book object.
  */
@@ -25,9 +27,21 @@ public interface BookService {
     public BookDto updateBook(BookDto bookDTO);
 
     /**
-     *@param id is the number of book that will be reserved
+     *@param bookDto contains the number of book that will be reserved and user email
      *@return the updated book object
      */
-    public BookDto reserveBook(Long id);
+    public BookDto reserveBook(BookDto bookDto);
 
+    /**
+     * Sends bookDto to RabbitMQSender
+     * @param bookDto - has book id and user id to make a reservation
+     */
+    public void reserveBookRabbitMQ(BookDto bookDto);
+
+    /**
+     * Find all books by author name
+     * @param bookDto - required parameters to search books
+     * @return list of BookDtos
+     */
+    public List<BookDto> getByFilters(BookDto bookDto);
 }

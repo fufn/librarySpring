@@ -4,7 +4,7 @@ databaseChangeLog:
       author: fufn
       changes:
         - createTable:
-            tableName: library
+            tableName: users
             columns:
               - column:
                   name: id
@@ -14,31 +14,28 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
+                  name: email
                   type: varchar(50)
               - column:
-                  name: city
+                  name: password
+                  type: varchar(150)
+              - column:
+                  name: full_name
                   type: varchar(50)
   - changeSet:
-      id: 2
-      author: fufn
-      comment: "Create Library"
+      id : 2
+      author : fufn
       changes:
         - insert:
-            tableName: library
+            tableName: users
             columns:
               - column:
-                  name: name
-                  value: "Marwin"
+                  name: email
+                  value: "admin.adminovich@gmail.com"
               - column:
-                  name: city
-                  value: "astana"
-        - insert:
-            tableName: library
-            columns:
+                  name: password
+                  value: "$2a$12$MV1GFXAGnJxLmeqi5Nv7Euvk63UlW.agKitp3TyknM5txBgqz6yKO"
               - column:
-                  name: name
-                  value: "National"
-              - column:
-                  name: city
-                  value: "almaty"
+                  name: full_name
+                  value: "Admin Adminovich"
+

@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * LibraryDTO - class representing data transfer object
+ * Used in LibraryController and LibraryServiceImpl
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,5 +19,6 @@ public class LibraryDto {
 
     private Long id;
     private String name;
+    private String city;
     private List<BookDto> books;
 }

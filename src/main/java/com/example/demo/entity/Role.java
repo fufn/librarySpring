@@ -5,38 +5,31 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
 
-/**
- * Library class represents the library object
- * Has id, name and List of Books stored in library.
- */
+@Entity
+@Table(name = "role")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "library")
 @Builder
-public class Library {
+public class Role{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
-    private String city;
-
-    @OneToMany(mappedBy = "library", cascade = CascadeType.MERGE)
-    private List<Book> books;
+    @ManyToMany(mappedBy = "roles")
+    private List<BookUser> users;
 }
