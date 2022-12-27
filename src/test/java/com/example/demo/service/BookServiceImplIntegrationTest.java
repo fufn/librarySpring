@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +50,6 @@ class BookServiceImplIntegrationTest {
                 .build();
         roleRepository.save(role);
         user = BookUser.builder()
-                .id(1L)
                 .fullName("John")
                 .email("john@example.com")
                 .roles(List.of(role))
@@ -65,7 +63,6 @@ class BookServiceImplIntegrationTest {
         // given
         BookDto bookDto = new BookDto();
         bookDto.setName("Test Book");
-        bookDto.setLibraryId(1L);
         bookDto.setDescription("DEscription");
         bookDto.setIsBooked(false);
         bookDto.setAuthor("Author");
@@ -142,9 +139,6 @@ class BookServiceImplIntegrationTest {
         // given
         Book book = new Book();
         book.setName("Test Book");
-        book.setLibrary(Library.builder()
-                .city("city")
-                .name("library").build());
         book.setDescription("DEscription");
         book.setIsBooked(false);
         book.setAuthor("Author");

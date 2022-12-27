@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: fufn
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(50)
+              - column:
+                  name: password
+                  type: varchar(150)
+              - column:
+                  name: full_name
+                  type: varchar(50)
+  - changeSet:
+      id : 2
+      author : fufn
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: "admin.adminovich@gmail.com"
+              - column:
+                  name: password
+                  value: "$2a$12$MV1GFXAGnJxLmeqi5Nv7Euvk63UlW.agKitp3TyknM5txBgqz6yKO"
+              - column:
+                  name: full_name
+                  value: "Admin Adminovich"
+

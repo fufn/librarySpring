@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: fufn
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+              - column:
+                  name: author
+                  type: varchar(50)
+              - column:
+                  name: description
+                  type: varchar(512)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: int
+              - column:
+                  name: is_booked
+                  type: boolean
+              - column:
+                  name: library_id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+  - changeSet:
+      id: 2
+      author: fufn
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: library_id
+            baseTableName: book
+            baseTableSchemaName: public
+            constraintName: fk_book_library
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: id
+            referencedTableName: library
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: 3
+      author: fufn
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: book
+            baseTableSchemaName: public
+            constraintName: fk_book_user
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: id
+            referencedTableName: users
+            referencedTableSchemaName: public
+            validate: true

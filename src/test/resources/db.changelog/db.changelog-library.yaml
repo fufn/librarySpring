@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: fufn
+      changes:
+        - createTable:
+            tableName: library
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+              - column:
+                  name: city
+                  type: varchar(50)
+  - changeSet:
+      id: 2
+      author: fufn
+      comment: "Create Library"
+      changes:
+        - insert:
+            tableName: library
+            columns:
+              - column:
+                  name: name
+                  value: "Marwin"
+              - column:
+                  name: city
+                  value: "astana"
+        - insert:
+            tableName: library
+            columns:
+              - column:
+                  name: name
+                  value: "National"
+              - column:
+                  name: city
+                  value: "almaty"

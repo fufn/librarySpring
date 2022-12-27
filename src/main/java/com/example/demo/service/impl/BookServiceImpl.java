@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.controller.handler.BookAlreadyReservedExceptionHandler;
 import com.example.demo.dto.BookDto;
 import com.example.demo.dto.mapper.impl.BookMapper;
 import com.example.demo.entity.Book;
@@ -24,6 +25,8 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
     private final RabbitMQSender rabbitMQSender;
     private final Logger logger = LogManager.getLogger(getClass());
+    private final static String BOOK_ALREADY_RESERVED = "this book is already reserved";
+    private final static String BOOK_NOT_FOUND = "There is no such book to reserve";
 
     @Override
     public BookDto addBook(BookDto book) {
@@ -60,13 +63,15 @@ public class BookServiceImpl implements BookService {
         } else if (bookToReserve.getIsBooked() && bookToReserve.getUser().getId() == bookDto.getUserId()) {
             logger.debug("Book is unreserved");
             bookToReserve.setIsBooked(!bookToReserve.getIsBooked());
+        } else {
+            throw new BookAlreadyReservedExceptionHandler(BOOK_ALREADY_RESERVED);
         }
         return bookMapper.toDto(bookRepository.save(bookToReserve));
     }
 
     @Override
     public void reserveBookRabbitMQ(BookDto bookDto) {
-        Book book = bookRepository.findById(bookDto.getId()).orElseThrow(() -> new BookNotFoundExceptionHandler("There is no such book to reserve"));
+        Book book = bookRepository.findById(bookDto.getId()).orElseThrow(() -> new BookNotFoundExceptionHandler(BOOK_NOT_FOUND));
         logger.debug("Sending bookDto to RabbitMQ queue. " + bookDto);
         rabbitMQSender.sendBookDto(bookDto);
         logger.debug("BookDto was sent.");
