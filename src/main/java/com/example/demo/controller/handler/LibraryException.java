@@ -4,13 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * BookNotFoundException is the exception that raises when there is no requested book in database
+ * LibraryNotFoundException is the exception that raises when there is no requested library in database
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class BookNotFoundExceptionHandler extends RuntimeException {
-
-    public BookNotFoundExceptionHandler(String msg){
+public class LibraryException extends RuntimeException {
+    public LibraryException(String msg) {
         super(msg);
     }
-
 }

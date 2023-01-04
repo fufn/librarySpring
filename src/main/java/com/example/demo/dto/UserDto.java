@@ -1,12 +1,13 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.Book;
+import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 
 /**
  * UserDTO - class representing data transfer object
@@ -26,5 +27,6 @@ public class UserDto {
     private String email;
     @NotEmpty(message = "Password should be empty")
     private String password;
+    private List<Book> books;
 
 }

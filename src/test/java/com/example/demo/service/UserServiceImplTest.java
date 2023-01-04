@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.handler.UserAlreadyExistHandler;
+import com.example.demo.controller.handler.UserException;
 import com.example.demo.dto.UserDto;
 import com.example.demo.dto.mapper.impl.UserMapper;
 import com.example.demo.entity.BookUser;
@@ -9,7 +9,6 @@ import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.impl.UserServiceImpl;
 import java.util.ArrayList;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -55,12 +53,10 @@ public class UserServiceImplTest {
         user.setPassword(userDto.getPassword());
         user.setRoles(List.of(role));
 
-        when(userMapper.toEntity(userDto)).thenReturn(user);
         when(roleRepository.findByName("ROLE_USER")).thenReturn(role);
         when(userRepository.save(any(BookUser.class))).thenReturn(user);
-        when(userMapper.toDto(user)).thenReturn(userDto);
         //when
-        UserDto savedUser = userService.saveUser(userDto);
+        UserDto savedUser = userService.saveUser(user);
         //then
         assertNotNull(savedUser);
         verify(userRepository, times(1)).save(user);
@@ -86,7 +82,7 @@ public class UserServiceImplTest {
         //when
         when(userRepository.findByEmail("test@example.com")).thenReturn(user);
         //then
-        assertThrows(UserAlreadyExistHandler.class, () -> userService.saveUser(userDto));
+        assertThrows(UserException.class, () -> userService.saveUser(user));
     }
 
     @Test
@@ -113,7 +109,7 @@ public class UserServiceImplTest {
         String fullName = "Test User";
         String password = "password";
 
-        UserDto userDto = new UserDto();
+        BookUser userDto = new BookUser();
         userDto.setEmail(email);
         userDto.setFullName(fullName);
         userDto.setPassword(password);
@@ -125,7 +121,6 @@ public class UserServiceImplTest {
 
         when(userRepository.findByEmail(email)).thenReturn(user);
         when(userRepository.save(user)).thenReturn(user);
-        when(userMapper.toDto(user)).thenReturn(userDto);
         //when
         UserDto updatedUser = userService.updateUser(userDto);
 

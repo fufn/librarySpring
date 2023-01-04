@@ -38,7 +38,7 @@ public class SecurityConfig{
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**").hasRole("ADMIN")
                 .antMatchers("/").permitAll()
-//                .anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().disable();
         return http.build();

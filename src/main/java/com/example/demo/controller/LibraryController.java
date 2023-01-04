@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.FilterDto;
 import com.example.demo.dto.LibraryDto;
+import com.example.demo.dto.mapper.impl.LibraryMapper;
 import com.example.demo.service.LibraryService;
 import io.swagger.v3.oas.annotations.Operation;
-import liquibase.pro.packaged.V;
+import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.List;
-
 /**
  * LibraryController - represents rest controller.
  * Responsible for REST operations on library objects
@@ -33,6 +33,7 @@ import java.util.List;
 public class LibraryController {
 
     private final LibraryService libraryService;
+    private final LibraryMapper libraryMapper;
     private final Logger logger = LogManager.getLogger(getClass());
 
     /**
@@ -44,7 +45,7 @@ public class LibraryController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public LibraryDto addLibrary(@Valid @RequestBody LibraryDto library) {
         logger.info("POST request to add library = {} ", library);
-        return libraryService.addLibrary(library);
+        return libraryService.addLibrary(libraryMapper.toEntity(library));
     }
 
     /**
@@ -90,15 +91,15 @@ public class LibraryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public LibraryDto updateLibrary(@Valid @RequestBody LibraryDto libraryDTO) {
         logger.info("PUT request to update library = {}", libraryDTO);
-        return libraryService.updateLibrary(libraryDTO);
+        return libraryService.updateLibrary(libraryMapper.toEntity(libraryDTO));
     }
 
     @Operation(summary = "Get libraries by filter")
     @GetMapping(value = "/libraries/filter")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public List<LibraryDto> getByFilet(@Valid @RequestBody LibraryDto libraryDto){
-        logger.info("GET request to get libraries with filter = {}", libraryDto);
-        return libraryService.getByFilters(libraryDto);
+    public List<LibraryDto> getByFilet(@Valid @RequestBody FilterDto filterDto) {
+        logger.info("GET request to get libraries with filter = {}", filterDto);
+        return libraryService.getByFilters(filterDto);
     }
 
 }

@@ -22,18 +22,4 @@ public class BookDto {
     private Boolean isBooked;
     private Long libraryId;
     private Long userId;
-
-    @Override
-    public String toString() {
-        return "BookDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                ", description='" + description + '\'' +
-                ", year=" + year +
-                ", isBooked=" + isBooked +
-                ", libraryId=" + libraryId +
-                ", userId=" + userId +
-                '}';
-    }
 }

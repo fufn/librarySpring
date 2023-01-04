@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.example.demo.dto.BookDto;
+import com.example.demo.entity.Book;
 import com.example.demo.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -38,9 +39,10 @@ public class BookControllerTest {
     @Test
     @WithMockUser(username = "admin@adminovich.com", password = "asdasd", authorities = {"ADMIN"})
     public void addBookTest() throws Exception {
+
         BookDto bookDto = getBookDtoWithoutId();
 
-        when(bookService.addBook(any(BookDto.class))).thenReturn(bookDto);
+        when(bookService.addBook(any(Book.class))).thenReturn(bookDto);
 
         mockMvc.perform(post("/books")
                         .content(objectMapper.writeValueAsString(bookDto))

@@ -1,6 +1,6 @@
 package com.example.demo.rabbit;
 
-import com.example.demo.dto.BookDto;
+import com.example.demo.entity.Book;
 import com.example.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -16,9 +16,10 @@ public class RabbitMQReceiver {
 
     private final BookService bookService;
     private final Logger logger = LogManager.getLogger(RabbitMQReceiver.class.toString());
+
     @RabbitHandler
-    public void toReserve(BookDto bookDto) {
-        bookService.reserveBook(bookDto);
-        logger.info("BookDto listener invoked - Book reserved with id : " + bookDto.getId());
+    public void toReserve(Book book) {
+        bookService.reserveBook(book);
+        logger.info("BookDto listener invoked - Book reserved with id : " + book.getId());
     }
 }

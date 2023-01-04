@@ -1,23 +1,24 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.controller.handler.UserAlreadyExistHandler;
+import com.example.demo.controller.handler.UserException;
 import com.example.demo.dto.UserDto;
 import com.example.demo.dto.mapper.impl.UserMapper;
-import com.example.demo.entity.Role;
+import com.example.demo.entity.Book;
 import com.example.demo.entity.BookUser;
+import com.example.demo.entity.Role;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,16 +30,15 @@ public class UserServiceImpl implements UserService {
     private final static String USER_ALREADY_EXIST = "There is already an account with the same email.";
     private final Logger logger = LogManager.getLogger(getClass());
     @Override
-    public UserDto saveUser(UserDto userDto) {
-        logger.debug("Trying to save a user. " + userDto);
-        BookUser existingUser = this.findByEmail(userDto.getEmail());
+    public UserDto saveUser(BookUser user) {
+        logger.debug("Trying to save a user. " + user);
+        BookUser existingUser = this.findByEmail(user.getEmail());
 
         if(existingUser != null){
-            logger.debug("Such user already exists. " + userDto);
-            throw new UserAlreadyExistHandler(USER_ALREADY_EXIST);
+            logger.debug("Such user already exists. " + user);
+            throw new UserException(USER_ALREADY_EXIST);
         }
 
-        BookUser user = userMapper.toEntity(userDto);
         Role role = roleRepository.findByName("ROLE_USER");
         user.setRoles(List.of(role));
         logger.debug("Saving user.");
@@ -69,13 +69,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto) {
-        logger.debug("Trying to update the user " + userDto);
-        BookUser user = userRepository.findByEmail(userDto.getEmail());
+    public UserDto updateUser(BookUser user) {
+        logger.debug("Trying to update the user " + user);
+        BookUser newUser = userRepository.findByEmail(user.getEmail());
         logger.debug("User was found");
-        user.setFullName(userDto.getFullName());
+        newUser.setFullName(user.getFullName());
         logger.debug("Saving the user");
-        return userMapper.toDto(userRepository.save(user));
+        return userMapper.toDto(userRepository.save(newUser));
     }
 
 }

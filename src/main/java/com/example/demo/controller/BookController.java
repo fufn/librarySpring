@@ -1,11 +1,18 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.BookDto;
+import com.example.demo.dto.FilterDto;
+import com.example.demo.dto.ReserveDto;
+import com.example.demo.dto.mapper.impl.BookMapper;
 import com.example.demo.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.util.List;
 
 /**
  * BookController - class representing rest controller.
@@ -30,6 +33,7 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final BookMapper bookMapper;
     private final Logger logger = LogManager.getLogger(getClass());
 
     /**
@@ -41,7 +45,7 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookDto addBook(@Valid @RequestBody BookDto book) {
         logger.info("POST request to add book = {} ", book);
-        return bookService.addBook(book);
+        return bookService.addBook(bookMapper.toEntityCreation(book));
     }
 
     /**
@@ -64,28 +68,28 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookDto updateBook(@Valid @RequestBody BookDto book) {
         logger.info("PUT request to update book = {}", book);
-        return bookService.updateBook(book);
+        return bookService.updateBook(bookMapper.toEntity(book));
     }
 
     /**
-     * @param bookDto - contains the id number of book that will be reserved and user email
+     * @param reserveDto - contains the id number of book that will be reserved and user email
      */
     @Operation(summary = "Makes a reservation for book")
     @PutMapping(value = "/books/reserve")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void reserveBook(@Valid @RequestBody BookDto bookDto) {
-        logger.info("PUT request to reserve book = {}", bookDto);
-        bookService.reserveBookRabbitMQ(bookDto);
+    public void reserveBook(@Valid @RequestBody ReserveDto reserveDto) {
+        logger.info("PUT request to reserve book = {}", reserveDto);
+        bookService.reserveBookRabbitMQ(reserveDto);
     }
 
     /**
-     * @param bookDto contains the required filters
+     * @param filterDto contains the required filters
      */
     @GetMapping(value = "/books")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @Operation(summary = "searches for books with certain author")
-    public List<BookDto> getBookByFilters(@Valid @RequestBody BookDto bookDto){
-        logger.info("GET request to get books by filters = {}", bookDto);
-        return bookService.getByFilters(bookDto);
+    public Page<BookDto> getBookByFilters(@Valid @RequestBody FilterDto filterDto, @RequestBody Pageable pageable) {
+        logger.info("GET request to get books by filters = {}", filterDto);
+        return bookService.getByFilters(filterDto, pageable);
     }
 }

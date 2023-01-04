@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.handler.LibraryNotFoundExceptionHandler;
+import com.example.demo.controller.handler.LibraryException;
+import com.example.demo.dto.FilterDto;
 import com.example.demo.dto.LibraryDto;
-import com.example.demo.dto.UserDto;
 import com.example.demo.dto.mapper.impl.LibraryMapper;
-import com.example.demo.entity.BookUser;
 import com.example.demo.entity.Library;
 import com.example.demo.repository.CustomLibraryRepository;
 import com.example.demo.repository.LibraryRepository;
@@ -69,7 +68,7 @@ public class LibraryServiceImplTest {
         //given
         //when
         //then
-        assertThrows(LibraryNotFoundExceptionHandler.class, () -> libraryService.getLibrary(2L));
+        assertThrows(LibraryException.class, () -> libraryService.getLibrary(2L));
     }
 
     @Test
@@ -90,23 +89,17 @@ public class LibraryServiceImplTest {
                 .id(1L)
                 .name("library")
                 .build();
-        LibraryDto libraryDto = LibraryDto.builder()
-                .id(1L)
-                .name(library.getName())
-                .build();
         when(libraryRepository.save(any(Library.class))).thenReturn(library);
-        when(libraryMapper.toDto(library)).thenReturn(libraryDto);
-        when(libraryMapper.toEntity(libraryDto)).thenReturn(library);
         //when
-        LibraryDto result = libraryService.addLibrary(libraryDto);
+        LibraryDto result = libraryService.addLibrary(library);
         //then
-        assertEquals(libraryDto, result);
+        assertEquals(library, result);
     }
 
     @Test
     public void givenLibraryDto_whenUpdateLibrary_thenSuccess() {
         //given
-        LibraryDto libraryDto = LibraryDto.builder()
+        Library libraryDto = Library.builder()
                 .id(1L)
                 .name("library NEW")
                 .city("astana")
@@ -117,8 +110,6 @@ public class LibraryServiceImplTest {
                 .city("astana")
                 .build();
         when(libraryRepository.save(library)).thenReturn(library);
-        when(libraryMapper.toDto(library)).thenReturn(libraryDto);
-        when(libraryMapper.toEntity(libraryDto)).thenReturn(library);
         //when
         LibraryDto result = libraryService.updateLibrary(libraryDto);
         //then
@@ -128,7 +119,7 @@ public class LibraryServiceImplTest {
     @Test
     void givenBadFilters_whenFindByFilters_thenNoResult() {
         //given
-        LibraryDto libraryDto = LibraryDto.builder()
+        FilterDto libraryDto = FilterDto.builder()
                 .name("")
                 .city("")
                 .build();
@@ -142,7 +133,7 @@ public class LibraryServiceImplTest {
     @Test
     void givenGoodFilters_whenFindByFilters_thenSuccess() {
         // given
-        LibraryDto libraryDto = LibraryDto.builder()
+        FilterDto libraryDto = FilterDto.builder()
                 .city("city1")
                 .build();
         Library library1 = Library.builder()
