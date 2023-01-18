@@ -1,12 +1,12 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Book;
+import com.example.demo.entity.BookUser;
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Transactional
-public interface BookRepository extends JpaRepository<Book, Long> {
-
+public interface UserRepository extends JpaRepository<BookUser, Long> {
+    BookUser findByEmail(String email);
 }

@@ -1,0 +1,45 @@
+package com.example.demo.service;
+
+import com.example.demo.dto.UserDto;
+import com.example.demo.entity.BookUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+/**
+ * Service responsible for operations on users.
+ */
+public interface UserService {
+    /**
+     * @param user Dto of User that will be registered in system.
+     * @return the same UserDto but with generated id.
+     */
+    UserDto saveUser(BookUser user);
+
+    /**
+     * @param email - the email of the user that need to be searched
+     * @return the User in database
+     */
+    BookUser findByEmail(String email);
+
+    /**
+     * @param pageable - pageable object that needed to return slice of data
+     * @return the page of all users.
+     */
+    Page<UserDto> findAllUsers(Pageable pageable);
+
+    /**
+     * Deletes user with certain id.
+     *
+     * @param id - id of user that will be deleted.
+     */
+    void deleteById(Long id);
+
+    /**
+     * Updates the user information.
+     *
+     * @param user has all updated information about the user.
+     * @return updated UserDto
+     */
+    UserDto updateUser(BookUser user);
+
+}

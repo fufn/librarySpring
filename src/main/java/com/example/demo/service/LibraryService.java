@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.FilterDto;
 import com.example.demo.dto.LibraryDto;
-import org.springframework.data.domain.Pageable;
-
+import com.example.demo.entity.Library;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service responsible for operations on library.
@@ -11,30 +13,33 @@ import java.util.List;
 public interface LibraryService {
 
     /**
-     * @param id - id of library requested from database
+     * @param id id of library requested from database
      * @return return the library object from db
      */
-    public LibraryDto getLibrary(Long id);
+    LibraryDto getLibrary(Long id);
 
     /**
-     *@return returns list of all libraries
+     * @param pageable - pageable object that needed to return slice of data
+     * @return returns list of all libraries
      */
-    public List<LibraryDto> getLibraries(Pageable pageable);
+    Page<LibraryDto> getLibraries(Pageable pageable);
 
     /**
-     *@param libraryDTO - the object of library that is needed to be saved to database
-     *@return the object after successful save
+     * @param library the object of library that is needed to be saved to database
+     * @return the object after successful save
      */
-    public LibraryDto addLibrary(LibraryDto libraryDTO);
+    LibraryDto addLibrary(Library library);
 
     /**
-     *@param id - the id number of the library that will be deleted
+     * @param id - the id number of the library that will be deleted
      */
-    public void deleteLibrary(Long id);
+    void deleteLibrary(Long id);
 
     /**
-     *@param libraryDTO - the object of library that will be updated in the database
-     *@return the updated object of library
+     * @param library the object of library that will be updated in the database
+     * @return the updated object of library
      */
-    public LibraryDto updateLibrary(LibraryDto libraryDTO);
+    LibraryDto updateLibrary(Library library);
+
+    List<LibraryDto> getByFilters(FilterDto filterDto);
 }

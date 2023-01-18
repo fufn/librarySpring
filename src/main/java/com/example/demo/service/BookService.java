@@ -1,6 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.BookDto;
+import com.example.demo.dto.FilterDto;
+import com.example.demo.dto.ReserveDto;
+import com.example.demo.entity.Book;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service responsible for operations on book object.
@@ -8,26 +14,40 @@ import com.example.demo.dto.BookDto;
 public interface BookService {
 
     /**
-     * @param bookDTO object of book instance
+     * @param book object of book instance
      * @return returns the book which was added to Database
      */
-    public BookDto addBook(BookDto bookDTO);
+    BookDto addBook(Book book);
 
     /**
      * @param id - the book that will be deleted
      */
-    public void deleteBook(Long id);
+    void deleteBook(Long id);
 
     /**
-     *@param bookDTO is the object that will be updated in the database
-     *@return the updated object
+     * @param book is the object that will be updated in the database
+     * @return the updated object
      */
-    public BookDto updateBook(BookDto bookDTO);
+    BookDto updateBook(Book book);
 
     /**
-     *@param id is the number of book that will be reserved
-     *@return the updated book object
+     * @param book contains the number of book that will be reserved and user email
+     * @return the updated book object
      */
-    public BookDto reserveBook(Long id);
+    BookDto reserveBook(Book book);
 
+    /**
+     * Sends bookDto to RabbitMQSender
+     *
+     * @param reserveDto - has book id and user id to make a reservation
+     */
+    void reserveBookRabbitMQ(ReserveDto reserveDto);
+
+    /**
+     * Find all books by author name
+     *
+     * @param filterDto - required parameters to search books
+     * @return list of BookDtos
+     */
+    Page<BookDto> getByFilters(FilterDto filterDto, Pageable pageable);
 }

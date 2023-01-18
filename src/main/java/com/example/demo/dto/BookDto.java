@@ -21,5 +21,5 @@ public class BookDto {
     private Integer year;
     private Boolean isBooked;
     private Long libraryId;
-
+    private Long userId;
 }

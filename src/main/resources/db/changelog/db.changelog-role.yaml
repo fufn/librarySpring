@@ -1,0 +1,108 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: fufn
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+  - changeSet:
+        id: 0
+        author: fufn
+        changes:
+            - insert:
+                  tableName: role
+                  columns:
+                      - column:
+                            name: name
+                            value: "ROLE_USER"
+
+            - insert:
+                  tableName: role
+                  columns:
+                      - column:
+                            name: name
+                            value: "ROLE_ADMIN"
+  - changeSet:
+        id: 2
+        author: fufn
+        changes:
+            - createTable:
+                  tableName: users_roles
+                  columns:
+                      - column:
+                            name: user_id
+                            type: BIGINT
+                      - column:
+                            name: role_id
+                            type: BIGINT
+  - changeSet:
+        id: 3
+        author: fufn
+        changes:
+            - addForeignKeyConstraint:
+                  baseColumnNames: user_id
+                  baseTableName: users_roles
+                  baseTableSchemaName: public
+                  constraintName: fk
+                  deferrable: true
+                  initiallyDeferred: true
+                  onDelete: CASCADE
+                  onUpdate: CASCADE
+                  referencedColumnNames: id
+                  referencedTableName: users
+                  referencedTableSchemaName: public
+                  validate: true
+  - changeSet:
+        id: 4
+        author: fufn
+        changes:
+            - addForeignKeyConstraint:
+                  baseColumnNames: role_id
+                  baseTableName: users_roles
+                  baseTableSchemaName: public
+                  constraintName: fk_role
+                  deferrable: true
+                  initiallyDeferred: true
+                  onDelete: CASCADE
+                  onUpdate: CASCADE
+                  referencedColumnNames: id
+                  referencedTableName: role
+                  referencedTableSchemaName: public
+                  validate: true
+  - changeSet:
+      id: 5
+      author: fufn
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: role_id
+                  value: 2
+  - changeSet:
+      id: 7
+      author: fufn
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: role_id
+                  value: 1
